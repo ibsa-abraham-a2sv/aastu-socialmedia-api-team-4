@@ -5,4 +5,4 @@ This application is a Social Media App developed using ASP.NET Core Web API. The
 UML Diagram
 =============
 
-![image](https://drive.google.com/file/d/177Wl83OO6N6Gq6en2YR1qHCMQfABLZ_b/view?usp=sharing)
+![image](https://github.com/abneka/A2SV_backend_learning_path/blob/main/assets/uml%20class.png)
