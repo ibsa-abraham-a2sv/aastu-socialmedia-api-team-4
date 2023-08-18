@@ -1,6 +1,6 @@
 ﻿using Domain.Common;
 
-namespace Domain.Entites;
+namespace Domain.Entities;
 
 public class NotificationEntity : BaseDomainEntity
 {
