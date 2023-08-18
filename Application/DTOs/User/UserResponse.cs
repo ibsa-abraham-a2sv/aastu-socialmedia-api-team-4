@@ -1,8 +1,6 @@
-﻿using Application.DTOs.Common;
+﻿namespace Application.DTOs.User;
 
-namespace Application.DTOs.User;
-
-public class UserDto : BaseDto
+public class UserResponse
 {
     public string UserName { get; set; } = null!;
     public string Email { get; set; } = null!;
