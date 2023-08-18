@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entites
+namespace Domain.Entities
 {
-    public class Comment : BaseDomainEntity
+    public class CommentEntity : BaseDomainEntity
     {
         public int PostId { get; set; }
         public string? Text { get; set; }

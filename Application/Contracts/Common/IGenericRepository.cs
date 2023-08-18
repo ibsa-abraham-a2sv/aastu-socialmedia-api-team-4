@@ -1,4 +1,3 @@
-
 using MediatR;
 
 namespace Application.Contracts.Common;
