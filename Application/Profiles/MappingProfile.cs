@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.User;
 
 namespace Application.Profiles
 {
@@ -14,6 +15,8 @@ namespace Application.Profiles
         public ProfileMapping() 
         {
             CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap();
+            CreateMap<UserEntity, UserResponseDto>().ReverseMap();
+            CreateMap<UserEntity, UserRequestDto>().ReverseMap();
         }
     }
 }
