@@ -4,5 +4,5 @@ namespace Application.DTOs.Follow;
 
 public class GetFollowersResponseDto
 {
-    public List<UserResponseDto>? Followers { get; set; }
+    public List<UserResponseDto> Followers { get; set; }
 }
