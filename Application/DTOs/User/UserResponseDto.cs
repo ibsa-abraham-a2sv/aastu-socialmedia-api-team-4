@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs.User;
 
-public class UserResponse
+public class UserResponseDto
 {
     public string UserName { get; set; } = null!;
     public string Email { get; set; } = null!;
