@@ -10,13 +10,16 @@ namespace Application.Features.Post.Commands.DeletePost;
 public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand,Unit>
 {
     private readonly IMapper _mapper;
-    public DeletePostCommandHandler(IMapper mapper)
+    private readonly IPostRepository _postRepository;
+    public DeletePostCommandHandler(IPostRepository postRepository, IMapper mapper)
     {
         _mapper = mapper;
+        _postRepository = postRepository;
     }
 
-    public Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeletePostCommand command, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var post =  await _postRepository.DeleteAsync(command.PostID);
+        return Unit.Value;
     }
 }
