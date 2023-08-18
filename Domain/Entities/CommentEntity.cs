@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Comment : BaseDomainEntity
+    public class CommentEntity : BaseDomainEntity
     {
         public int PostId { get; set; }
         public string? Text { get; set; }
