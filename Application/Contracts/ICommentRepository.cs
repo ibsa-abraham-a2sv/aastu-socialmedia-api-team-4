@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Common;
+using Application.DTOs.Comment;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Application.Contracts
 {
     public interface ICommentRepository : IGenericRepository<CommentEntity>
     {
+        Task<List<CommentEntity>> GetCommentByPostId(int postId);
     }
 }

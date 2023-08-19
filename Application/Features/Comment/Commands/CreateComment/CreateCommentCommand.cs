@@ -10,6 +10,6 @@ namespace Application.Features.Comment.Commands.DeleteComment
 {
     public class CreateCommentCommand : IRequest<CommentResponseDTO>
     {
-        public CommentRequestDTO? Request { get; set; }
+        public CommentRequestDTO? commentRequestDTO { get; set; }
     }
 }

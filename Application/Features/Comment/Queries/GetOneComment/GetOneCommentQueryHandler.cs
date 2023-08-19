@@ -1,4 +1,6 @@
-﻿using Application.DTOs.Comment;
+﻿using Application.Contracts;
+using Application.DTOs.Comment;
+using AutoMapper;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,17 @@ namespace Application.Features.Comment.Queries.GetOneComment
 {
     public class GetOneCommentQueryHandler : IRequestHandler<GetOneCommentQuery, CommentResponseDTO>
     {
-        public Task<CommentResponseDTO> Handle(GetOneCommentQuery request, CancellationToken cancellationToken)
+        private readonly ICommentRepository _commentRepository;
+        private readonly IMapper _mapper;
+
+        public GetOneCommentQueryHandler(ICommentRepository commentRepository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _commentRepository = commentRepository;
+            _mapper = mapper;
         }
+        public async Task<CommentResponseDTO> Handle(GetOneCommentQuery request, CancellationToken cancellationToken)
+        {
+            return _mapper.Map<CommentResponseDTO>(await _commentRepository.GetByIdAsync(request.Id));
+        }  
     }
 }
