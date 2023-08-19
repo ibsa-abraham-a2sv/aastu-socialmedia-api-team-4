@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.User;
-using Application.DTOs.Post;
 
 namespace Application.Profiles
 {
