@@ -29,10 +29,10 @@ namespace Application.Features.Comment.Commands.UpdateComment
             {
                 throw new ValidationException(validationResult.Errors);
             }
-
+            
             var new_comment = _mapper.Map<CommentEntity>(request.UpdateCommentDTO);
 
-            var old_comment = await _commentRepository.GetByIdAsync(new_comment.Id);
+            var old_comment = await _commentRepository.GetByIdAsync(request.Id);
 
             if (old_comment != null)
             {
@@ -41,7 +41,7 @@ namespace Application.Features.Comment.Commands.UpdateComment
 
             // we have to check wheather the user id in the comment id is equal to the user currently loggedin
 
-            await _commentRepository.UpdateAsync(new_comment.Id, new_comment);
+            await _commentRepository.UpdateAsync(request.Id, new_comment);
             return Unit.Value;
         }
     }
