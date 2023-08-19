@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Comment.Queries.GetAllCommets
 {
-    public class GetAllCommetsOfPostQueryHandler : IRequestHandler<GetAllCommentsQuery, List<CommentResponseDTO>>
+    public class GetAllCommetsQueryHandler : IRequestHandler<GetAllCommentsQuery, List<CommentResponseDTO>>
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
