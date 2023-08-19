@@ -1,4 +1,5 @@
 using Application.DTOs.Comment;
+using Application.DTOs.Post;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -15,8 +16,13 @@ namespace Application.Profiles
         public ProfileMapping() 
         {
             CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap();
+            
             CreateMap<UserEntity, UserResponseDto>().ReverseMap();
             CreateMap<UserEntity, UserRequestDto>().ReverseMap();
+
+            CreateMap<PostEntity, PostResponseDto>().ReverseMap();
+            CreateMap<PostEntity, PostRequestDto>().ReverseMap();
         }
+
     }
 }
