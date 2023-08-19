@@ -9,5 +9,9 @@ namespace Application.Features.Comment.Commands.DeleteComment
 {
     public class DeleteCommentCommandValidator : AbstractValidator<DeleteCommentCommand>
     {
+        public DeleteCommentCommandValidator() 
+        {
+            RuleFor(x => x.Id).NotEmpty().WithMessage("{PropertyName} is required").GreaterThan(0).WithMessage("{PropertyName} can't be less than 1");
+        }
     }
 }

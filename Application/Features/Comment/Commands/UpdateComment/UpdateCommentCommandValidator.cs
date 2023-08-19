@@ -9,5 +9,8 @@ namespace Application.Features.Comment.Commands.UpdateComment
 {
     public class UpdateCommentCommandValidator : AbstractValidator<UpdateCommentCommand>
     {
+        public UpdateCommentCommandValidator() 
+        { 
+        }
     }
 }

@@ -15,13 +15,45 @@ namespace Application.Profiles
     {
         public ProfileMapping() 
         {
-            CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap();
+            CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            })); 
             
-            CreateMap<UserEntity, UserResponseDto>().ReverseMap();
-            CreateMap<UserEntity, UserRequestDto>().ReverseMap();
+            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
 
-            CreateMap<PostEntity, PostResponseDto>().ReverseMap();
-            CreateMap<PostEntity, PostRequestDto>().ReverseMap();
+            CreateMap<UserEntity, UserRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+
+            CreateMap<PostEntity, PostResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+
+            CreateMap<PostEntity, PostRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
         }
 
     }

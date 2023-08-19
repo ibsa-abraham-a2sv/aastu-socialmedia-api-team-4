@@ -10,6 +10,7 @@ namespace Application.Features.Comment.Commands.UpdateComment
 {
     public class UpdateCommentCommand : IRequest<Unit>
     {
-        public CommentRequestDTO? request{ get; set; }
+        public int Id { get; set; }
+        public CommentRequestDTO? UpdateCommentDTO{ get; set; }
     }
 }
