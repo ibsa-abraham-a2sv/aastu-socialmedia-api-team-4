@@ -34,6 +34,13 @@ namespace Persistence.Repositories
             return Unit.Value;
         }
 
+        public async Task<bool> Exists(int id)
+        {
+            var item = await _dbContext.Set<T>().FindAsync(id);
+            
+            return item != null;
+        }
+
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();

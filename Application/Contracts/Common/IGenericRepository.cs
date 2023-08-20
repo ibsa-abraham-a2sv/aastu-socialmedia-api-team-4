@@ -20,4 +20,7 @@ public interface IGenericRepository<T> where T : class
 
     //delete 
     public Task<Unit> DeleteAsync(int id);
+    
+    // check if exists
+    public Task<bool> Exists(int id);
 }
