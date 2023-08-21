@@ -23,6 +23,9 @@ namespace Persistence
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFollowRepository, FollowRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             return services;
         }
