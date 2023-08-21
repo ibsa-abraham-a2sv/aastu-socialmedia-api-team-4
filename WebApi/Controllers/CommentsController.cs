@@ -29,7 +29,7 @@ namespace WebApi.Controllers
             return await _mediator.Send(new GetAllCommentsQuery());
         }
 
-        [HttpGet("ofPost")]
+        [HttpGet("ofPost/{postId}")]
         public async Task<ActionResult<List<CommentResponseDTO>>> GetCommentOfPost(int postId)
         {
             return await _mediator.Send(new GetAllCommentsByPostIdQuery

@@ -34,7 +34,7 @@ namespace Application.Features.Comment.Commands.UpdateComment
 
             var old_comment = await _commentRepository.GetByIdAsync(request.Id);
 
-            if (old_comment != null)
+            if (old_comment == null)
             {
                 throw new Exception($"Comment with id {new_comment.Id} does't exist!");
             }

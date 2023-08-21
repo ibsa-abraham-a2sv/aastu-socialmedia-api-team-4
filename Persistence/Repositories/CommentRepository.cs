@@ -21,10 +21,10 @@ namespace Persistence.Repositories
             this.appDBContext = appDBContext;
         }
 
-        public Task<List<CommentEntity>> GetCommentByPostId(int postId)
+        public async Task<List<CommentEntity>> GetCommentByPostId(int postId)
         {
-            var comments = appDBContext.Comments.Where(c => c.PostId == postId);
-            return (Task<List<CommentEntity>>)comments;
+            var comments = await appDBContext.Comments.Where(c => c.PostId == postId).ToListAsync();
+            return comments;
         }
     }
 }

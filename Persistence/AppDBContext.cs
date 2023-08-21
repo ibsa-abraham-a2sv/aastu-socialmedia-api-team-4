@@ -23,6 +23,7 @@ namespace Persistence
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CommentEntity>(entity =>
             {
+                entity.HasKey(e => e.Id);
             });
         }
     }
