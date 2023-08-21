@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Persistence.Repositories;
 
-public class LikeRepository : GenericRepository<LikeEntity>
+public class LikeRepository : GenericRepository<LikeEntity>, ILikeRepository
 {
     private readonly AppDBContext _dbContext;
 
