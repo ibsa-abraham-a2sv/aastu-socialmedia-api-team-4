@@ -11,6 +11,7 @@ namespace Persistence
     public class AppDBContext : DbContext
     {
         public DbSet<CommentEntity> Comments { get; set; }
+        public DbSet<PostEntity> Posts { get; set;}
         public DbSet<LikeEntity> Like { get; set; }
         public DbSet<FollowEntity> Follow { get; set; }
         public DbSet<NotificationEntity> Notification { get; set; }
