@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Like;
+using Application.Features.Comment.Commands.DeleteComment;
 using Application.Features.Like.Commands.Create_Like;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -27,5 +28,18 @@ public class LikeController : ControllerBase
         var like = await _mediator.Send(command);
 
         return CreatedAtAction(null, like);
+    }
+
+    [HttpPost("delete/{likeId:int}")]
+    public async Task<ActionResult<Unit>> DeleteLike(int likeId)
+    {
+        var command = new DeleteCommentCommand
+        {
+            Id = likeId
+        };
+
+        var result = await _mediator.Send(command);
+
+        return NoContent();
     }
 }
