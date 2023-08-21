@@ -16,5 +16,4 @@ public class UserEntity : BaseDomainEntity
     public List<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
     public List<PostEntity> Posts { get; set; } = new List<PostEntity>();
     public List<NotificationEntity> Notifications { get; set; } = new List<NotificationEntity>();
-
 }
