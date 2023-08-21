@@ -19,7 +19,7 @@ public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand,Unit>
 
     public async Task<Unit> Handle(DeletePostCommand command, CancellationToken cancellationToken)
     {
-        var post =  await _postRepository.DeleteAsync(command.PostID);
+        var post =  await _postRepository.DeleteAsync(command.PostId);
         return Unit.Value;
     }
 }
