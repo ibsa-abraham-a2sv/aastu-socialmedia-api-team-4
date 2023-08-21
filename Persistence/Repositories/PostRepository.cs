@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Post;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,18 @@ namespace Persistence.Repositories
         public PostRepository(AppDBContext dbContext) : base(dbContext) 
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<IReadOnlyList<PostEntity>> GetAllUserPostsAsync(int userId)
+        {
+            return await _dbContext.Posts.Where(post => post.UserId == userId).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<PostEntity>> SearchPost(string query)
+        {
+            return await _dbContext.Posts
+                    .Where(p => p.Content.Contains(query) && p.Title.Contains(query))
+                    .ToListAsync();
         }
     }
 }
