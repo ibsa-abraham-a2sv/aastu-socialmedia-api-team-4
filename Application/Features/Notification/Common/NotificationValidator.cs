@@ -4,11 +4,11 @@ using FluentValidation;
 
 namespace Application.Features.Notification.Commands.CreateNotification;
 
-public class CreateNotificationCommandValidator : AbstractValidator<NotificationDto>
+public class NotificationValidator : AbstractValidator<NotificationDto>
 {
     private readonly IUserRepository _userRepository;
 
-    public CreateNotificationCommandValidator(IUserRepository userRepository)
+    public NotificationValidator(IUserRepository userRepository)
     {
         _userRepository = userRepository;
 

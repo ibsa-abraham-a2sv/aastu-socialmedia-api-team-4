@@ -22,7 +22,7 @@ public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificati
     
     public async Task<NotificationDto> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateNotificationCommandValidator(_userRepository);
+        var validator = new NotificationValidator(_userRepository);
         var validationResult = validator.Validate(request.NotificationDto);
 
         if (!validationResult.IsValid)

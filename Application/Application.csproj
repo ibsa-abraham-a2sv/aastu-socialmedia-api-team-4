@@ -22,7 +22,5 @@
     <ItemGroup>
       <Folder Include="Features\Follow\Queries\GetFollowing\" />
       <Folder Include="Features\Like\Queries\" />
-      <Folder Include="Features\Notification\Commands\ToggleNotification\" />
-      <Folder Include="Features\Notification\Queries\GetNotifications\" />
     </ItemGroup>
 </Project>
