@@ -17,7 +17,7 @@ public class GetAllPostsByUserIdRequestHandler : IRequestHandler<GetAllPostsByUs
 
     public async Task<IReadOnlyList<PostResponseDto>> Handle(GetAllPostsByUserIdRequest request, CancellationToken cancellationToken)
     {
-        var post =  await _postRepository.GetAllUserPostsAsync(request.UserId);
+        var post =  await _postRepository.GetAllPostsByUserIdAsync(request.UserId);
         return _mapper.Map<IReadOnlyList<PostResponseDto>>(post);
     }
 }

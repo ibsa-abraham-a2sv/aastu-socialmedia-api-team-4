@@ -18,12 +18,12 @@ namespace Persistence.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IReadOnlyList<PostEntity>> GetAllUserPostsAsync(int userId)
+        public async Task<IReadOnlyList<PostEntity>> GetAllPostsByUserIdAsync(int userId)
         {
             return await _dbContext.Posts.Where(post => post.UserId == userId).ToListAsync();
         }
 
-        public async Task<IReadOnlyList<PostEntity>> SearchPost(string query)
+        public async Task<IReadOnlyList<PostEntity>> SearchPostAsync(string query)
         {
             return await _dbContext.Posts
                     .Where(p => p.Content.Contains(query) && p.Title.Contains(query))

@@ -16,7 +16,7 @@ public class SearchPostRequestHandler : IRequestHandler<SearchPostRequest,IReadO
 
     public async Task<IReadOnlyList<PostResponseDto>> Handle(SearchPostRequest request, CancellationToken cancellationToken)
     {
-        var posts =  await _postRepository.SearchPostsAsync(request.Query);
+        var posts =  await _postRepository.SearchPostAsync(request.Query);
         return _mapper.Map<IReadOnlyList<PostResponseDto>>(posts);   
     }
 }
