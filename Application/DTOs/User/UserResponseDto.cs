@@ -9,4 +9,5 @@ public class UserResponseDto
     public string LastName { get; set; } = null!;
     public string? Bio { get; set; }
     public DateTime DateOfBirth { get; set; }
+
 }
