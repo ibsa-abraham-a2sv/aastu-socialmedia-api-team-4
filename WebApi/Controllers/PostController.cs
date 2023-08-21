@@ -38,13 +38,13 @@ namespace WebApi.Controllers
             return await _mediator.Send(new GetSinglePostRequest{PostId = postId});
         }
 
-        [HttpGet]
-        [Route("SearchPost/{query:string}")]
-        public async Task<ActionResult<IReadOnlyList<PostResponseDto>>> SearchPost(string query)
-        {
-            var posts = await _mediator.Send(new SearchPostRequest {Query = query});
-            return Ok(posts);
-        }
+        //[HttpGet]
+        //[Route("SearchPost/{query:string}")]
+        //public async Task<ActionResult<IReadOnlyList<PostResponseDto>>> SearchPost(string query)
+        //{
+        //    var posts = await _mediator.Send(new SearchPostRequest {Query = query});
+        //    return Ok(posts);
+        //}
 
         [HttpGet]
         [Route("GetPostsByUserId/{UserId:int}")]
