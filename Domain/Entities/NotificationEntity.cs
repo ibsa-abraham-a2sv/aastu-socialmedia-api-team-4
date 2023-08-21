@@ -5,6 +5,7 @@ namespace Domain.Entities;
 public class NotificationEntity : BaseDomainEntity
 {
     public int UserId { get; set; }
+    public UserEntity? User { get; set; }
     public string? Content { get; set; }
     public bool ReadStatus { get; set; }
 }

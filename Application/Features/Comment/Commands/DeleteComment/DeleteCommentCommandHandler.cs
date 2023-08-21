@@ -30,7 +30,7 @@ namespace Application.Features.Comment.Commands.DeleteComment
 
             var comment = await _commentRepository.GetByIdAsync(request.Id);
 
-            if (comment != null)
+            if (comment == null)
             {
                 throw new Exception($"Comment with id {request.Id} does't exist!");
             }
