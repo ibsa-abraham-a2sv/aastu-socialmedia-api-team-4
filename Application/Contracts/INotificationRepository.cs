@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.Contracts;
 
-public interface INotificationEntity : IGenericRepository<NotificationEntity>
+public interface INotificationRepository : IGenericRepository<NotificationEntity>
 {
     
 }
