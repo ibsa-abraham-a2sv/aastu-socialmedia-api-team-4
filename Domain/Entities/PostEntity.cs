@@ -10,4 +10,6 @@ public class PostEntity : BaseDomainEntity
     public int UserId { get; set; }
     public UserEntity? User { get; set; }
     public int LikeCount { get; set; }
+    public List<LikeEntity>? Likes { get; set; }
+    public List<CommentEntity>? Comments { get; set; }
 }
