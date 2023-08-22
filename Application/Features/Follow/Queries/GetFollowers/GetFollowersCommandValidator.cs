@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Features.Follow.Queries.GetFollowers;
 
-public class GetFollowersCommandValidator : AbstractValidator<UserRequestDto>
+public class GetFollowersCommandValidator : AbstractValidator<GetFollowersCommand>
 {
     private readonly IUserRepository _userRepository;
 
@@ -12,7 +12,7 @@ public class GetFollowersCommandValidator : AbstractValidator<UserRequestDto>
     {
         _userRepository = userRepository;
         
-        RuleFor(u => u.Id)
+        RuleFor(u => u.UserId)
             .MustAsync(async (id, cancellationToken) =>
             {
                 var userExists = await _userRepository.Exists(id);

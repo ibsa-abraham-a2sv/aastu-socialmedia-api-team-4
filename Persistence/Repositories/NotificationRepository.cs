@@ -26,10 +26,10 @@ public class NotificationRepository : GenericRepository<NotificationEntity>, INo
         return notification;
     }
 
-    public async Task<List<NotificationEntity>> GetNotificationsOfUser(UserRequestDto userRequestDto)
+    public async Task<List<NotificationEntity>> GetNotificationsOfUser(int userId)
     {
         var notifications = await _dbContext.Notification
-            .Where(n => n.UserId == userRequestDto.Id)
+            .Where(n => n.UserId == userId)
             .ToListAsync();
 
         return notifications;

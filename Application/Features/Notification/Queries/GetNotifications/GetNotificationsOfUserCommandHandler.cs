@@ -22,7 +22,7 @@ public class GetNotificationsOfUserCommandHandler : IRequestHandler<GetNotificat
     {
         // TODO: user UserValidator to check the user's existence
 
-        var notifications = await _notificationRepository.GetNotificationsOfUser(request.UserRequestDto);
+        var notifications = await _notificationRepository.GetNotificationsOfUser(request.UserId);
 
         return _mapper.Map<List<NotificationDto>>(notifications);
     }
