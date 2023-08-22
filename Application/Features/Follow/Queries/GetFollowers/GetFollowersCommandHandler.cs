@@ -23,13 +23,12 @@ public class GetFollowersCommandHandler : IRequestHandler<GetFollowersCommand, L
     public async Task<List<UserResponseDto>> Handle(GetFollowersCommand request, CancellationToken cancellationToken)
     {
         var validator = new GetFollowersCommandValidator(_userRepository);
-        var validationResult = validator.Validate(request.UserRequestDto);
+        var validationResult = validator.Validate(request);
         
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var user = _mapper.Map<UserEntity>(request.UserRequestDto);
-        var followers = await _followRepository.GetFollowersList(user);
+        var followers = await _followRepository.GetFollowersList(request.UserId);
         
         return _mapper.Map<List<UserResponseDto>>(followers);
     }

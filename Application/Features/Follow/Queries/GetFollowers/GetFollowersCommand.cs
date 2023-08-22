@@ -5,5 +5,5 @@ namespace Application.Features.Follow.Queries.GetFollowers;
 
 public class GetFollowersCommand : IRequest<List<UserResponseDto>>
 {
-    public UserRequestDto UserRequestDto { get; set; }
+    public int UserId { get; set; }
 }

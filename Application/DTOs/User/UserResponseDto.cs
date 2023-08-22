@@ -1,10 +1,11 @@
-﻿namespace Application.DTOs.User;
+﻿using Application.DTOs.Common;
 
-public class UserResponseDto
+namespace Application.DTOs.User;
+
+public class UserResponseDto : BaseDto
 {
     public string UserName { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string? Bio { get; set; }

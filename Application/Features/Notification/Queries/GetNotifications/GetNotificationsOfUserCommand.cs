@@ -6,5 +6,5 @@ namespace Application.Features.Notification.Queries.GetNotifications;
 
 public class GetNotificationsOfUserCommand : IRequest<List<NotificationDto>>
 {
-    public UserRequestDto UserRequestDto { get; set; }
+    public int UserId { get; set; }
 }

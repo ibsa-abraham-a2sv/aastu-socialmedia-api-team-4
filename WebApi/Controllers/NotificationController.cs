@@ -46,11 +46,11 @@ public class NotificationController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<NotificationDto>>> GetNotifications(UserRequestDto userRequestDto)
+    public async Task<ActionResult<List<NotificationDto>>> GetNotifications(int userId)
     {
         var command = new GetNotificationsOfUserCommand
         {
-            UserRequestDto = userRequestDto
+            UserId = userId
         };
 
         var res = await _mediator.Send(command);

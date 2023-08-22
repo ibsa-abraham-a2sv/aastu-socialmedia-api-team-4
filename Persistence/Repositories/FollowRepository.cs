@@ -13,9 +13,9 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
         _dbContext = dbContext;
     }
 
-    public Task<List<UserEntity>> GetFollowersList(UserEntity userEntity)
+    public Task<List<UserEntity>> GetFollowersList(int UserId)
     {
-        var followers = _dbContext.Follow.Where(f => f.FollowingId == userEntity.Id)
+        var followers = _dbContext.Follow.Where(f => f.FollowingId == UserId)
             .Select(f => f.Follower)
             .ToListAsync();
 
