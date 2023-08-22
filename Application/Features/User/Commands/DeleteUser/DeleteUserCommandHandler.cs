@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Features.User.Commands.DeleteUser;
@@ -17,6 +18,14 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
 
     public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
+        var validation = new DeleteUserCommandValidator(_userRepository);
+        var validationResult = await validation.ValidateAsync(request, cancellationToken);
+        
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+        
         var user = await _userRepository.GetByIdAsync(request.UserID);
         await _userRepository.DeleteAsync(user.Id);
         return Unit.Value;
