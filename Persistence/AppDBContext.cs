@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext<UserEntity, IdentityRole<int>,int>
     {
         public DbSet<CommentEntity> Comments { get; set; }
         public DbSet<PostEntity> Posts { get; set;}

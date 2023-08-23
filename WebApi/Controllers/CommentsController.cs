@@ -6,6 +6,7 @@ using Application.Features.Comment.Queries.GetAllCommets.GetAllCommetsByPostId;
 using Application.Features.Comment.Queries.GetOneComment;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 
@@ -24,6 +25,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("all")]
+        [Authorize]
         public async Task<ActionResult<List<CommentResponseDTO>>> Get()
         {
             return await _mediator.Send(new GetAllCommentsQuery());

@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Application.DTOs.User;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -18,8 +19,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        if (request.UserDto == null)
+        {
+            throw new Exception("empty in feature");
+        }
         var user = _mapper.Map<UserEntity>(request.UserDto);
-        var res = await _userRepository.CreateAsync(user);
-        return user.Id;
+        user.PasswordHash = request.UserDto.Password;
+        var res = await _userRepository.Register(user);
+        return res.Id;
     }
 }
