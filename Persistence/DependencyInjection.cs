@@ -56,6 +56,7 @@ namespace Persistence
             services.AddScoped<IFollowRepository, FollowRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
+            services.AddScoped<IUserConnectionRepository, UserConnectionRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
