@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
 using Application.DTOs.Comment;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,21 @@ namespace Application.Features.Comment.Queries.GetOneComment
         }
         public async Task<CommentResponseDTO> Handle(GetOneCommentQuery request, CancellationToken cancellationToken)
         {
-            return _mapper.Map<CommentResponseDTO>(await _commentRepository.GetByIdAsync(request.Id));
+            var validator = new GetOneCommentQueryValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var comment = await _commentRepository.GetByIdAsync(request.Id);
+            if (comment == null)
+            { 
+                throw new Exception("Comment with id " + request.Id + " not found"); 
+            }
+
+            return _mapper.Map<CommentResponseDTO>(comment);
         }  
     }
 }

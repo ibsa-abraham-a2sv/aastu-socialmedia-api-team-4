@@ -36,7 +36,7 @@ namespace Application.Features.Comment.Commands.UpdateComment
 
             if (old_comment == null)
             {
-                throw new Exception($"Comment with id {new_comment.Id} does't exist!");
+                throw new Exception($"Comment with id {request.Id} does't exist!");
             }
 
             // we have to check wheather the user id in the comment id is equal to the user currently loggedin
