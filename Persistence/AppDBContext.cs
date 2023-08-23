@@ -15,6 +15,7 @@ namespace Persistence
         public DbSet<LikeEntity> Like { get; set; }
         public DbSet<FollowEntity> Follow { get; set; }
         public DbSet<NotificationEntity> Notification { get; set; }
+        public DbSet<UserConnectionEntity> UserConnectionMappings { get; set; }
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
             
