@@ -34,7 +34,7 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
 
     private async Task<bool> UserIdExists(int UserId, CancellationToken token)
     {
-         var userExists = await UserRepository.GetByIdAsync(UserId);
+        var userExists = await UserRepository.GetByIdAsync(UserId);
         return userExists != null;
     }
 }
