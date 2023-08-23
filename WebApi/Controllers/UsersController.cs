@@ -30,7 +30,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize]
         public async Task<ActionResult<List<UserResponseDto>>> GetAllUsers()
         {
             var users = await _mediator.Send(new GetAllUsersRequest());

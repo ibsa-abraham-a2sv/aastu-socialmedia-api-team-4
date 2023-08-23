@@ -25,7 +25,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize]
         public async Task<ActionResult<List<CommentResponseDTO>>> Get()
         {
             return await _mediator.Send(new GetAllCommentsQuery());
