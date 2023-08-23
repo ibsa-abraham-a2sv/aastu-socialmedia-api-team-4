@@ -2,10 +2,11 @@
 using Application.DTOs.User;
 using AutoMapper;
 using MediatR;
+using System.Collections.Generic;
 
 namespace Application.Features.User.Queries.GetAllUsers;
 
-public class GetAllUserRequestHandler : IRequestHandler<GetAllUsersRequest, IReadOnlyList<UserResponseDto>>
+public class GetAllUserRequestHandler : IRequestHandler<GetAllUsersRequest, List<UserResponseDto>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
@@ -16,9 +17,9 @@ public class GetAllUserRequestHandler : IRequestHandler<GetAllUsersRequest, IRea
         _mapper = mapper;
     }
     
-    public async Task<IReadOnlyList<UserResponseDto>> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)
+    public async Task<List<UserResponseDto>> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)
     {
         var users = await _userRepository.GetAllAsync();
-        return _mapper.Map<IReadOnlyList<UserResponseDto>>(users);
+        return _mapper.Map<List<UserResponseDto>>(users);
     }
 }
