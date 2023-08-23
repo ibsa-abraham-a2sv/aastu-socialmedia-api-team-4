@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Contracts;
+using Application.Exceptions;
 using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
@@ -27,7 +28,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,Unit>
     {
         var validator = new CreatePostCommandValidator(){UserRepository = _userRepository};
         var validationResult = validator.Validate(command);
-
         if (!validationResult.IsValid)
         {
             throw new ValidationException(validationResult.Errors);

@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Persistence.Repositories.Jwt;
 using System.Text;
+using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -19,7 +21,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -27,7 +29,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseAuthentication();;
+
 app.UseAuthorization();
 app.MapControllers();
 

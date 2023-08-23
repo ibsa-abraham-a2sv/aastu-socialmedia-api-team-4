@@ -8,6 +8,7 @@ using Application.Features.Post.Queries.GetSinglePost;
 using Application.Features.Post.Queries.SearchPost;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Application.Exceptions;
 
 namespace WebApi.Controllers
 {
@@ -38,13 +39,13 @@ namespace WebApi.Controllers
             return await _mediator.Send(new GetSinglePostRequest{PostId = postId});
         }
 
-        //[HttpGet]
-        //[Route("SearchPost/{query:string}")]
-        //public async Task<ActionResult<IReadOnlyList<PostResponseDto>>> SearchPost(string query)
-        //{
-        //    var posts = await _mediator.Send(new SearchPostRequest {Query = query});
-        //    return Ok(posts);
-        //}
+        [HttpGet]
+        [Route("SearchPost/{query}")]
+        public async Task<ActionResult<IReadOnlyList<PostResponseDto>>> SearchPost(string query)
+        {
+           var posts = await _mediator.Send(new SearchPostRequest {Query = query});
+           return Ok(posts);
+        }
 
         [HttpGet]
         [Route("GetPostsByUserId/{UserId:int}")]
@@ -62,8 +63,8 @@ namespace WebApi.Controllers
             var command = new CreatePostCommand{NewPost = PostRequest};
             var Post = await _mediator.Send(command);
 
-            // return CreatedAtAction(nameof(GetSinglePost), new{Id = Post.Id}, Post);
             return Ok("created");
+            // return CreatedAtAction(nameof(GetSinglePost), new{Id = Post.Id}, Post);
         }
 
         [HttpPut]
