@@ -1,5 +1,7 @@
 ﻿using Application.Contracts;
 using Application.Contracts.Common;
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
