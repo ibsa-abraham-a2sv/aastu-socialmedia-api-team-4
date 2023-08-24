@@ -56,6 +56,7 @@ namespace Persistence
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IUserConnectionRepository, UserConnectionRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             return services;
         }

@@ -12,4 +12,5 @@ public class PostEntity : BaseDomainEntity
     public List<LikeEntity>? Likes { get; set; }
     public List<CommentEntity>? Comments { get; set; }
     public int LikeCount { get; set; } = 0;
+    public List<TagEntity> Tags { get; set; } = null!;
 }
