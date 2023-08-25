@@ -10,5 +10,4 @@ public class UserResponseDto : BaseDto
     public string LastName { get; set; } = null!;
     public string? Bio { get; set; }
     public DateTime DateOfBirth { get; set; }
-
 }

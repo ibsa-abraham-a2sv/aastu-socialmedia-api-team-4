@@ -2,6 +2,7 @@
 using Application.DTOs.User;
 using AutoMapper;
 using Domain.Entities;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Features.User.Commands.CreateUser;
@@ -19,13 +20,17 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        if (request.UserDto == null)
+        var validator = new CreateUserCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
         {
-            throw new Exception("empty in feature");
-        }
+            throw new ValidationException(validationResult.Errors);
+        }   
+        
+        // hash password
+        request.UserDto.Password = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);
         var user = _mapper.Map<UserEntity>(request.UserDto);
-        user.PasswordHash = request.UserDto.Password;
-        var res = await _userRepository.Register(user);
+        var res = await _userRepository.CreateAsync(user);
         return res.Id;
     }
 }

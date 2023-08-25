@@ -8,4 +8,5 @@ public interface IUserRepository : IGenericRepository<UserEntity>
 {
     Task<AuthResponse> Login(UserRequestDto user);
     Task<UserEntity> Register(UserEntity user);
+    Task<UserEntity?> GetUserByEmail(string userEmail);
 }

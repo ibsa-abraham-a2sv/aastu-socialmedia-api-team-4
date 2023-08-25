@@ -3,6 +3,7 @@ using Application.Features.User.Commands.CreateUser;
 using Application.Features.User.Queries.GetAllUsers;
 using Application.Features.User.Queries.GetSingleUser;
 using Application.Features.User.Queries.Login;
+using CloudinaryDotNet.Actions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -30,6 +31,8 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("all")]
+        // [Authorize(Roles = "Admin")]
+        // [Authorize]
         public async Task<ActionResult<List<UserResponseDto>>> GetAllUsers()
         {
             var users = await _mediator.Send(new GetAllUsersRequest());

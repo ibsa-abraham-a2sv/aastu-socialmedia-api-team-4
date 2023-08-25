@@ -1,3 +1,4 @@
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Contracts.Common;

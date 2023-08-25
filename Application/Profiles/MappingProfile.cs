@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.DTOs.Common;
+using Application.DTOs.Tag;
 using Application.DTOs.User;
 using Domain.Common;
 
@@ -15,58 +15,95 @@ namespace Application.Profiles
 {
     public class ProfileMapping : Profile
     {
-        public ProfileMapping() 
+        public ProfileMapping()
         {
-            CreateMap<BaseDomainEntity, BaseDto>().ReverseMap();
-            CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int value && value == 0)
+            CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
                 {
-                    return false;
-                }
-                return srcMember != null;
-            })); 
-            
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
             CreateMap<CommentEntity, CommentResponseDTO>().ReverseMap().ForAllMembers(opts =>
                 opts.Condition((src, dest, srcMember) =>
                 {
-                if (srcMember is int value && value == 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            })); 
-            
-            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int value && value == 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
 
-            CreateMap<UserEntity, UserRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int value && value == 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
-            }));
+                    return srcMember != null;
+                }));
 
-            CreateMap<PostEntity, PostResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int value && value == 0)
+            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
                 {
-                    return false;
-                }
-                return srcMember != null;
-            }));
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
 
-            CreateMap<PostEntity, PostRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int and 0)
+                    return srcMember != null;
+                }));
+
+            CreateMap<UserEntity, UserRequestDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
                 {
-                    return false;
-                }
-                return srcMember != null;
-            }));
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<PostEntity, PostResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<PostEntity, PostRequestDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int and 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<TagEntity, TagResponseDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
+
+            CreateMap<TagEntity, TagRequestDto>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
+                    if (srcMember is int value && value == 0)
+                    {
+                        return false;
+                    }
+
+                    return srcMember != null;
+                }));
         }
 
     }

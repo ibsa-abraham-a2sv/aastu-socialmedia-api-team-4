@@ -1,7 +1,6 @@
 ﻿using Application.Contracts;
 using Application.Contracts.Common;
 using Domain.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Persistence
 {
@@ -22,14 +22,9 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtsettings = new JwtSettings();
+            JwtSettings jwtsettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtsettings);
             services.AddSingleton(Options.Create(jwtsettings));
-
-            Console.WriteLine("1", jwtsettings.Audience);
-            Console.WriteLine(jwtsettings.Issuer);
-            Console.WriteLine(jwtsettings.Secret);
-            Console.WriteLine(jwtsettings.ExpiryMinutes);
 
             //services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
@@ -37,19 +32,7 @@ namespace Persistence
             {
                 options.UseNpgsql(configuration.GetConnectionString("SocialMediaDB"));
             });
-           
-            services.AddIdentity<UserEntity, IdentityRole<int>>( options =>
-            {
-                options.Password.RequiredLength = 8;
-                options.Password.RequireDigit = true;
-                options.Password.RequireNonAlphanumeric = true;
-
-                options.User.RequireUniqueEmail = true;
-                //options.SignIn.RequireConfirmedEmail = true;
-
-            }).AddEntityFrameworkStores<AppDBContext>().AddDefaultTokenProviders();
-
-
+            
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -57,8 +40,9 @@ namespace Persistence
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IUserConnectionRepository, UserConnectionRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -69,7 +53,6 @@ namespace Persistence
                 ValidAudience = jwtsettings.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsettings.Secret)),
             });
-
             return services;
         }
     }

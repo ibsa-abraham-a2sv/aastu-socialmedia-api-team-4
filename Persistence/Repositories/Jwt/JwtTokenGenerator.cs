@@ -7,12 +7,21 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Contracts.Common;
+using Microsoft.Extensions.Options;
 
 namespace Persistence.Repositories.Jwt
 {
-    public static class JwtTokenGenerator
+    public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        public static string GenerateToken(string email, string username, int id, string firstname, string lastname, JwtSettings _jwtSettings)
+        private readonly JwtSettings _jwtSettings;
+
+        public JwtTokenGenerator(IOptions<JwtSettings> jwtSettings)
+        {
+            _jwtSettings = jwtSettings.Value;
+        }
+
+        public string GenerateToken(int id, string email, string username, string firstname, string lastname)
         {
             var claims = new[]
             {
@@ -21,6 +30,9 @@ namespace Persistence.Repositories.Jwt
                 new Claim(JwtRegisteredClaimNames.FamilyName, lastname),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, "Admin"),
+                // new Claim(ClaimTypes.Role, "User"),
+                // new Claim(ClaimTypes.Role, "SuperAdmin"),
             };
 
             Console.WriteLine(_jwtSettings.Secret);
@@ -35,7 +47,6 @@ namespace Persistence.Repositories.Jwt
                 expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
                 signingCredentials: signingCredentials
             );
-
 
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
