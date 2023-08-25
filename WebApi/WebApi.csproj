@@ -25,4 +25,7 @@
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="../SocialSyncIntegrationTesting.Tests.csproj" />
+    </ItemGroup>
 </Project>

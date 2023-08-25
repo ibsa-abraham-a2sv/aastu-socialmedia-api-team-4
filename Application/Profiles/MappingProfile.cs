@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.Common;
 using Application.DTOs.User;
+using Domain.Common;
 
 namespace Application.Profiles
 {
@@ -15,7 +17,18 @@ namespace Application.Profiles
     {
         public ProfileMapping() 
         {
+            CreateMap<BaseDomainEntity, BaseDto>().ReverseMap();
             CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            })); 
+            
+            CreateMap<CommentEntity, CommentResponseDTO>().ReverseMap().ForAllMembers(opts =>
+                opts.Condition((src, dest, srcMember) =>
+                {
                 if (srcMember is int value && value == 0)
                 {
                     return false;
@@ -48,7 +61,7 @@ namespace Application.Profiles
             }));
 
             CreateMap<PostEntity, PostRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int value && value == 0)
+                if (srcMember is int and 0)
                 {
                     return false;
                 }

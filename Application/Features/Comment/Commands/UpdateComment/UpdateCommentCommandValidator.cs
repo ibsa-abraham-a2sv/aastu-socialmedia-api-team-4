@@ -15,6 +15,9 @@ namespace Application.Features.Comment.Commands.UpdateComment
             {
                 RuleFor(x => x.UpdateCommentDTO.Text).MinimumLength(10).WithMessage("{PropertyName} must either empty or length of greater than 10");
             });
+
+            RuleFor(c => c.UpdateCommentDTO.PostId).GreaterThanOrEqualTo(0);
+            RuleFor(c => c.UpdateCommentDTO.UserId).GreaterThanOrEqualTo(0);
         }
     }
 }
