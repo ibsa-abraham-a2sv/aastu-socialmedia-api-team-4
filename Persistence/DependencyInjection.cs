@@ -1,7 +1,6 @@
 ﻿using Application.Contracts;
 using Application.Contracts.Common;
 using Domain.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -57,19 +56,8 @@ namespace Persistence
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IUserConnectionRepository, UserConnectionRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtsettings.Issuer,
-                ValidAudience = jwtsettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtsettings.Secret)),
-            });
-
             return services;
         }
     }

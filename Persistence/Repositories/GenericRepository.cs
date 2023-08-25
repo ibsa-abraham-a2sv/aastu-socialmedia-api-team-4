@@ -6,7 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AutoMapper;
+using Domain.Entities;
 
 namespace Persistence.Repositories
 {
@@ -14,7 +17,7 @@ namespace Persistence.Repositories
     {
         private readonly AppDBContext _dbContext;
 
-        public GenericRepository(AppDBContext dbContext)
+        protected GenericRepository(AppDBContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,6 +25,7 @@ namespace Persistence.Repositories
         public async Task<T> CreateAsync(T entity)
         {
             var item = await _dbContext.Set<T>().AddAsync(entity);
+        
             await _dbContext.SaveChangesAsync();
             return item.Entity;
         }

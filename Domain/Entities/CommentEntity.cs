@@ -12,8 +12,8 @@ namespace Domain.Entities
     {
         public int PostId { get; set; }
         public int UserId { get; set; }
-        public UserEntity? User { get; set; }
-        public PostEntity? Post { get; set; }
+        public UserEntity User { get; set; } = null!;
+        public PostEntity Post { get; set; } = null!;
         public string? Text { get; set; }
     }
 }
