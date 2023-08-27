@@ -58,18 +58,17 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("CreatePost")]
-        public async Task<ActionResult<PostResponseDto>> CreatePost(PostRequestDto PostRequest)
+        public async Task<ActionResult> CreatePost(PostRequestDto PostRequest)
         {
             var command = new CreatePostCommand{NewPost = PostRequest};
-            var Post = await _mediator.Send(command);
+            var createdPost = await _mediator.Send(command);
 
-            return Ok("created");
-            // return CreatedAtAction(nameof(GetSinglePost), new{Id = Post.Id}, Post);
+            return CreatedAtAction(nameof(GetSinglePost), new{Id = createdPost.Id}, createdPost);
         }
 
         [HttpPut]
         [Route("UpdatePost/{id:int}")]
-        public async Task UpdatePost(int Id, PostRequestDto PostRequest)
+        public async Task<ActionResult> UpdatePost(int Id, PostRequestDto PostRequest)
         {
             var command = new UpdatePostCommand
             {
@@ -78,13 +77,15 @@ namespace WebApi.Controllers
             };
 
             await _mediator.Send(command);
+            return NoContent();
         }
 
         [HttpDelete]
         [Route("DeletePost/{id:int}")]
-        public async Task DeletePost(int id)
+        public async Task<ActionResult> DeletePost(int id)
         {
             await _mediator.Send(new DeletePostCommand { PostId = id });
+            return NoContent();
         }
 
     }
