@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Persistence.Repositories.Jwt;
 using System.Text;
+using Infrastructure;
 using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
