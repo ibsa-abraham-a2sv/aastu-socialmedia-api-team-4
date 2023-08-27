@@ -1,8 +1,8 @@
 using Application;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+// using Microsoft.AspNetCore.Authentication.JwtBearer;
+// using Microsoft.IdentityModel.Tokens;
 using Persistence;
-using Persistence.Repositories.Jwt;
+// using Persistence.Repositories.Jwt;
 using System.Text;
 using Infrastructure;
 using WebApi.Middleware;
@@ -33,9 +33,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseAuthentication();;
+// app.UseAuthentication();;
 
-app.UseAuthorization();
+// app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

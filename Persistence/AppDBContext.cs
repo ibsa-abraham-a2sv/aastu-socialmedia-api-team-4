@@ -1,16 +1,9 @@
 ﻿using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public class AppDBContext : IdentityDbContext<UserEntity, IdentityRole<int>,int>
+    public class AppDBContext : DbContext
     {
         public DbSet<CommentEntity> Comments { get; set; }
         public DbSet<PostEntity> Posts { get; set;}
@@ -21,6 +14,8 @@ namespace Persistence
         
         public DbSet<TagEntity> Tags { get; set; }
         
+        public DbSet<UserEntity> Users { get; set; }
+
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
             

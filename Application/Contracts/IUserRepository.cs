@@ -6,6 +6,7 @@ namespace Application.Contracts;
 
 public interface IUserRepository : IGenericRepository<UserEntity>
 {
-    Task<AuthResponse> Login(UserRequestDto user);
-    Task<UserEntity> Register(UserEntity user);
+    // Task<AuthResponse> Login(UserRequestDto user);
+    // Task<UserEntity> Register(UserEntity user);
+    public Task<UserEntity?> GetUserByEmail(string email);
 }
