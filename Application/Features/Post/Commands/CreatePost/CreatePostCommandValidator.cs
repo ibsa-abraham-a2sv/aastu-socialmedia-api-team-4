@@ -18,12 +18,11 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
         {
             RuleFor(x => x.NewPost.UserId)
                 .NotEmpty().WithMessage("{PropertyName} is Required")
-                .GreaterThan(0).WithMessage("{PropertyName} can't be less than 1")
                 .MustAsync(UserIdExists).WithMessage("Invalid {PropertyName}");
 
             RuleFor(x => x.NewPost.Title)
                 .NotEmpty().WithMessage("{PropertyName} is Required")
-                .Length(2, 50).WithMessage("{PropertyName} can't be less than 2");
+                .Length(1, 50).WithMessage("{PropertyName} can't be less than 1");
 
             RuleFor(x => x.NewPost.Content)
                 .NotEmpty().WithMessage("{PropertyName} is Required")
@@ -34,7 +33,6 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
 
     private async Task<bool> UserIdExists(int UserId, CancellationToken token)
     {
-        var userExists = await UserRepository.GetByIdAsync(UserId);
-        return userExists != null;
+        return await UserRepository.Exists(UserId);
     }
 }
