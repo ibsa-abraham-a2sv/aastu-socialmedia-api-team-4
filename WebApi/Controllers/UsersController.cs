@@ -1,12 +1,14 @@
 ﻿using Application.DTOs.User;
 using Application.Features.User.Commands.CreateUser;
+using Application.Features.User.Commands.VerifyUser;
 using Application.Features.User.Queries.GetAllUsers;
 using Application.Features.User.Queries.GetSingleUser;
-using Application.Features.User.Queries.Login;
+// using Application.Features.User.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+// using System.Web;
 
 namespace WebApi.Controllers
 {
@@ -49,12 +51,23 @@ namespace WebApi.Controllers
             });
             return response;
         }
-
-        [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login(UserRequestDto query)
+        
+        [HttpGet("verify")]
+        public async Task<ActionResult<bool>> VerifyUser([FromQuery] string email, [FromQuery] string token)
         {
-            var response = await _mediator.Send(new LoginQuery {  User = query});
+            var response = await _mediator.Send(new VerifyUserCommand
+            {
+                Email = email,
+                Token = token
+            });
             return response;
         }
+
+        // [HttpPost("login")]
+        // public async Task<ActionResult<AuthResponse>> Login(UserRequestDto query)
+        // {
+        //     var response = await _mediator.Send(new LoginQuery {  User = query});
+        //     return response;
+        // }
     }
 }

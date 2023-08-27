@@ -28,7 +28,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,Unit>
 
     public async Task<Unit> Handle(CreatePostCommand command, CancellationToken cancellationToken)
     {
-        var validator = new CreatePostCommandValidator(){UserRepository = _userRepository};
+        var validator = new CreatePostCommandValidator(_userRepository){UserRepository = _userRepository};
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
