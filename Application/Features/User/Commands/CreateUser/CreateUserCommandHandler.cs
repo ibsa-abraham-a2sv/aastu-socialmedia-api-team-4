@@ -4,6 +4,7 @@ using Application.DTOs.User;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Entities.Email;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -24,13 +25,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        if (request.UserDto == null)
+        var validator = new CreateUserCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        
+        if (!validationResult.IsValid)
         {
-            throw new Exception("empty in feature");
+            throw new ValidationException(validationResult.Errors);
         }
+        
         var user = _mapper.Map<UserEntity>(request.UserDto);
-        // var salt = BCrypt.Net.BCrypt.GenerateSalt();
-        // user.PasswordHash = request.UserDto.Password;
         user.Password = BCrypt.Net.BCrypt.HashPassword(request.UserDto.Password);
         user.Token = Guid.NewGuid().ToString();
         var res = await _userRepository.CreateAsync(user);
@@ -41,8 +44,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
         var http = new HttpContextAccessor();
         var scheme = http.HttpContext?.Request.Scheme?? "https";
         var host = http.HttpContext?.Request.Host.Value?? "localhost:44322";
-        // var scheme = HttpContext.Request.Scheme; // "https" or "http"
-        // var host = HttpContext.Request.Host.Value; // "localhost:44322" or your custom domain
         
         await _emailSender.SendEmail(new Email()
         {

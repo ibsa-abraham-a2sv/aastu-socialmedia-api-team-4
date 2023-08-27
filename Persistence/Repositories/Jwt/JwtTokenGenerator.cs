@@ -14,13 +14,22 @@ namespace Persistence.Repositories.Jwt
     {
         public static string GenerateToken(string email, string username, int id, string firstname, string lastname, JwtSettings _jwtSettings)
         {
+            // var claims = new[]
+            // {
+            //     new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
+            //     new Claim(JwtRegisteredClaimNames.GivenName, firstname),
+            //     new Claim(JwtRegisteredClaimNames.FamilyName, lastname),
+            //     new Claim(JwtRegisteredClaimNames.Email, email),
+            //     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            // };
+            
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
-                new Claim(JwtRegisteredClaimNames.GivenName, firstname),
-                new Claim(JwtRegisteredClaimNames.FamilyName, lastname),
-                new Claim(JwtRegisteredClaimNames.Email, email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.GivenName, firstname),
+                new Claim(ClaimTypes.Surname, lastname),
+                new Claim(ClaimTypes.NameIdentifier, id.ToString())
             };
 
             Console.WriteLine(_jwtSettings.Secret);
@@ -32,10 +41,10 @@ namespace Persistence.Repositories.Jwt
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.ExpiryDays),
+                notBefore: DateTime.UtcNow,
                 signingCredentials: signingCredentials
             );
-
 
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }

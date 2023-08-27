@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Notification;
+﻿using System.Security.Claims;
+using Application.DTOs.Notification;
 using Application.DTOs.User;
 using Application.Features.Notification.Commands.ToggleNotification;
 using Application.Features.Notification.Queries.GetNotifications;
@@ -35,6 +36,18 @@ public class NotificationController : ControllerBase
     [HttpPost("toggle")]
     public async Task<ActionResult<NotificationDto>> ToggleNotification(NotificationDto notificationDto)
     {
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            throw new Exception("User not authenticated");
+        }
+            
+        var userId = int.Parse(userIdClaim.Value);
+            
+        if (userId != notificationDto.UserId)
+        {
+            throw new Exception("User not authorized");
+        }
         var command = new ToggleNotificationCommand
         {
             NotificationDto = notificationDto
@@ -48,6 +61,18 @@ public class NotificationController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<NotificationDto>>> GetNotifications(int userId)
     {
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            throw new Exception("User not authenticated");
+        }
+            
+        var uId = int.Parse(userIdClaim.Value);
+            
+        if (uId != userId)
+        {
+            throw new Exception("User not authorized");
+        }
         var command = new GetNotificationsOfUserCommand
         {
             UserId = userId

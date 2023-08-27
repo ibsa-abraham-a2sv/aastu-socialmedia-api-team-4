@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Like;
+﻿using System.Security.Claims;
+using Application.DTOs.Like;
 using Application.Features.Comment.Commands.DeleteComment;
 using Application.Features.Like.Commands.Create_Like;
 using MediatR;
@@ -20,6 +21,18 @@ public class LikeController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<LikeDto>> CreateLike(LikeDto likeDto)
     {
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            throw new Exception("User not authenticated");
+        }
+            
+        var userId = int.Parse(userIdClaim.Value);
+            
+        if (userId != likeDto.UserId)
+        {
+            throw new Exception("User not authorized");
+        }
         var command = new CreateLikeCommand
         {
             LikeDto = likeDto

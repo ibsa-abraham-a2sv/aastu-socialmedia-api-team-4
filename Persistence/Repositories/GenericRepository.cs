@@ -56,10 +56,11 @@ namespace Persistence.Repositories
             return item;
         }
 
-        public async Task<Unit> UpdateAsync(int Id, T entity)
+        public async Task<Unit> UpdateAsync(int id, T entity)
         {
-            var item = await GetByIdAsync(Id);
-            _dbContext.Entry(item).State = EntityState.Modified;
+            var item = await GetByIdAsync(id);
+            // _dbContext.Entry(item).State = EntityState.Modified;
+            _dbContext.Entry(item).CurrentValues.SetValues(entity);
             await _dbContext.SaveChangesAsync();
             return Unit.Value;  
         }

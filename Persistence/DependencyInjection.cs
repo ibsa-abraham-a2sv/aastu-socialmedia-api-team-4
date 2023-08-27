@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Contracts.Auth;
+using Persistence.Repositories.Auth;
 
 namespace Persistence
 {
@@ -57,6 +59,7 @@ namespace Persistence
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IUserConnectionRepository, UserConnectionRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IAuth, AuthRepository>();
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             return services;
         }
