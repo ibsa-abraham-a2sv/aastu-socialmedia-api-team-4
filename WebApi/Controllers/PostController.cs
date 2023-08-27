@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Application.DTOs.Post;
 using Application.Features.Post.Commands.CreatePost;
 using Application.Features.Post.Commands.DeletePost;
@@ -58,9 +59,21 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("CreatePost")]
-        public async Task<ActionResult<PostResponseDto>> CreatePost(PostRequestDto PostRequest)
+        public async Task<ActionResult<PostResponseDto>> CreatePost(PostRequestDto postRequest)
         {
-            var command = new CreatePostCommand{NewPost = PostRequest};
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != postRequest.UserId)
+            {
+                throw new Exception("User not authorized");
+            }
+            var command = new CreatePostCommand{NewPost = postRequest};
             var Post = await _mediator.Send(command);
 
             return Ok("created");
@@ -69,11 +82,26 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [Route("UpdatePost/{id:int}")]
-        public async Task UpdatePost(int Id, PostRequestDto PostRequest)
+        public async Task UpdatePost(int id, PostRequestDto PostRequest)
         {
+            var post = await _mediator.Send(new GetSinglePostRequest{PostId = id});
+            
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != post.UserId)
+            {
+                throw new Exception("User not authorized");
+            }
+            
             var command = new UpdatePostCommand
             {
-                PostId = Id,
+                PostId = id,
                 UpdatePost = PostRequest
             };
 
@@ -84,6 +112,21 @@ namespace WebApi.Controllers
         [Route("DeletePost/{id:int}")]
         public async Task DeletePost(int id)
         {
+            var post = await _mediator.Send(new GetSinglePostRequest{PostId = id});
+            
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != post.UserId)
+            {
+                throw new Exception("User not authorized");
+            }
+            
             await _mediator.Send(new DeletePostCommand { PostId = id });
         }
 

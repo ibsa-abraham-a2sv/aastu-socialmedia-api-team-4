@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Comment;
+﻿using System.Security.Claims;
+using Application.DTOs.Comment;
 using Application.Features.Comment.Commands.DeleteComment;
 using Application.Features.Comment.Commands.UpdateComment;
 using Application.Features.Comment.Queries.GetAllCommets;
@@ -51,6 +52,18 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<CommentResponseDTO>> Post(CommentRequestDTO commentRequest)
         {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != commentRequest.UserId)
+            {
+                throw new Exception("User not authorized");
+            }
             var command = new CreateCommentCommand
             {
                 commentRequestDTO = commentRequest
@@ -63,6 +76,20 @@ namespace WebApi.Controllers
         [HttpPut("{id:int}")]
         public async Task Update(int id, CommentRequestDTO commentRequest)
         {
+            var comment = await _mediator.Send( new GetOneCommentQuery { Id = id });
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != comment.UserId)
+            {
+                throw new Exception("User not authorized");
+            }
+            
             var command = new UpdateCommentCommand
             {
                 Id = id,
@@ -75,6 +102,19 @@ namespace WebApi.Controllers
         [HttpDelete("{id:int}")]
         public async Task Delete(int id)
         {
+            var comment = await _mediator.Send( new GetOneCommentQuery { Id = id });
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != comment.UserId)
+            {
+                throw new Exception("User not authorized");
+            }
             await _mediator.Send(new DeleteCommentCommand { Id = id });
         }
 
