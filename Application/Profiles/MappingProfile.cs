@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.Follow;
+using Application.DTOs.Like;
 using Application.DTOs.Tag;
 using Application.DTOs.User;
 
@@ -16,7 +18,15 @@ namespace Application.Profiles
     {
         public ProfileMapping() 
         {
-            CreateMap<CommentRequestDTO, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+            CreateMap<CommentRequestDto, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            })); 
+            
+            CreateMap<CommentResponseDTO, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
                 if (srcMember is int value && value == 0)
                 {
                     return false;
@@ -65,6 +75,30 @@ namespace Application.Profiles
             }));
             
             CreateMap<TagEntity, TagRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+            
+            CreateMap<LikeEntity, LikeDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+            
+            CreateMap<FollowEntity, FollowDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+            
+            CreateMap<FollowEntity, GetFollowersResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
                 if (srcMember is int value && value == 0)
                 {
                     return false;

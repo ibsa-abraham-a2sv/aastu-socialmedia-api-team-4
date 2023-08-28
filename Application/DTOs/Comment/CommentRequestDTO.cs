@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs.Comment
 {
-    public class CommentRequestDTO
+    public class CommentRequestDto
     {
-        public int UserId { get; set; }
         public int PostId { get; set; }
         public string? Text { get; set; }
     }

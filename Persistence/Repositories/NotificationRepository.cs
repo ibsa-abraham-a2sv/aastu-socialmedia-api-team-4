@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
 using Application.DTOs.Notification;
 using Application.DTOs.User;
+using Application.Exceptions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,9 @@ public class NotificationRepository : GenericRepository<NotificationEntity>, INo
     public async Task<NotificationEntity> ToggleNotification(NotificationEntity notificationDto)
     {
         var notification = _dbContext.Notification.FirstOrDefault(notificationDto);
+
+        if (notification == null)
+            throw new NotFoundException($"Notification not found!", notification);
 
         notification.ReadStatus = !notification.ReadStatus;
 

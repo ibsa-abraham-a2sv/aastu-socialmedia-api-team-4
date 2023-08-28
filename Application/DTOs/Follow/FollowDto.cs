@@ -5,5 +5,5 @@ namespace Application.DTOs.Follow;
 public class FollowDto : BaseDto
 {
     public int FollowerId { get; set; }
-    public int Following { get; set; }
+    public int FollowingId { get; set; }
 }

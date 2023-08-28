@@ -4,17 +4,12 @@ namespace Application.Features.Like.Commands.Create_Like;
 
 public class CreateLikeCommandValidator : AbstractValidator<CreateLikeCommand>
 {
-    public CreateLikeCommandValidator()
+    private readonly IPostRepository _postRepository;
+
+    public CreateLikeCommandValidator(IPostRepository postRepository)
     {
+        _postRepository = postRepository;
         RuleFor(x => x.LikeDto.PostId)
-            .NotEmpty()
-            .WithMessage("{PropertyName} is Required")
-            .GreaterThan(0)
-            .WithMessage("{PropertyName} can't be less than 1");
-        RuleFor(x => x.LikeDto.UserId)
-            .NotEmpty()
-            .WithMessage("{PropertyName} is Required")
-            .GreaterThan(0)
-            .WithMessage("{PropertyName} can't be less than 1");
+            .MustAsync(async (postId, token) => await _postRepository.Exists(postId));
     }
 }

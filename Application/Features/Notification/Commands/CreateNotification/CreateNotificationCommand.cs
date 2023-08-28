@@ -4,5 +4,5 @@ using MediatR;
 
 public class CreateNotificationCommand : IRequest<NotificationDto>
 {
-    public NotificationDto NotificationDto { get; set; }
+    public NotificationDto NotificationDto { get; set; } = null!;
 }
