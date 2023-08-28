@@ -15,7 +15,7 @@ public class UpdatePostCommandValidator : AbstractValidator<UpdatePostCommand>
 
         When(x => x.UpdatePost != null, () =>
         {
-            RuleFor(x => x.UpdatePost.UserId)
+            RuleFor(x => x.UserId)
                 .NotEmpty().WithMessage("{PropertyName} is Required")
                 .MustAsync(UserIdExists).WithMessage("Invalid {PropertyName}");
 
