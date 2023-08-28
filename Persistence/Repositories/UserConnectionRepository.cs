@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
 
@@ -39,8 +40,21 @@ public class UserConnectionRepository : IUserConnectionRepository
 
     public async Task<UserConnectionEntity> GetUserConnection(int UserId)
     {
-        var userConnection = await _dbContext.UserConnectionMappings.FindAsync(UserId);
+        var userConnection = await _dbContext.UserConnectionMappings.FirstOrDefaultAsync(uc => uc.UserId == UserId);
 
-        return userConnection;
+        return userConnection!;
+    }
+
+    public async Task CleanUpMapping(int UserId)
+    {
+        var userConnection = await _dbContext.UserConnectionMappings.FirstOrDefaultAsync(u => u.UserId == UserId);
+
+        if (userConnection == null)
+            return;
+
+        _dbContext.UserConnectionMappings.Remove(userConnection);
+        await _dbContext.SaveChangesAsync();
+
+        return;
     }
 }

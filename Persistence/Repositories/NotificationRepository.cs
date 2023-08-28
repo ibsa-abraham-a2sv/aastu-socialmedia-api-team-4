@@ -34,6 +34,7 @@ public class NotificationRepository : GenericRepository<NotificationEntity>, INo
     {
         var notifications = await _dbContext.Notification
             .Where(n => n.UserId == userId)
+            .OrderByDescending(n => n.CreatedAt)
             .ToListAsync();
 
         return notifications;

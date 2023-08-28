@@ -34,6 +34,8 @@ public class LikeRepository : GenericRepository<LikeEntity>, ILikeRepository
         post.LikeCount = post.LikeCount + 1;
 
         await _dbContext.SaveChangesAsync();
+        
+        
 
         return like.Entity;
     }

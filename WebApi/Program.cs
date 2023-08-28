@@ -11,8 +11,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using WebApi.Middleware;
+using WebApi.Service.NotificationService;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 // Add services to the container.
 builder.Services.AddApplication();
@@ -92,6 +96,8 @@ app.UseAuthentication();;
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<NotificationHub>("/notificationHub").RequireAuthorization();
 
 app.Run();
 public partial class Program
