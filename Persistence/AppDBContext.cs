@@ -36,6 +36,29 @@ namespace Persistence
             //         .HasForeignKey(c => c.PostId)
             //         .OnDelete(DeleteBehavior.Cascade);
             // });
+
+        }
+
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            UpdateTimestamps();
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void UpdateTimestamps()
+        {
+            var entities = ChangeTracker.Entries()
+                .Where(entry => entry.State == EntityState.Modified)
+                .Select(entry => entry.Entity);
+
+            foreach (var entity in entities)
+            {
+                var updatedAtProperty = entity.GetType().GetProperty("ModifiedAt");
+                if (updatedAtProperty != null && updatedAtProperty.PropertyType == typeof(DateTime))
+                {
+                    updatedAtProperty.SetValue(entity, DateTime.UtcNow);
+                }
+            }
         }
     }
 }
