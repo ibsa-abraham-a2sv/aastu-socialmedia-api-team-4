@@ -4,20 +4,20 @@ using FluentValidation;
 
 namespace Application.Features.Follow.Commands.CreateFollow;
 
-public class CreateFollowCommandValidator : AbstractValidator<FollowDto>
+public class FollowDtoValidator : AbstractValidator<FollowDto>
 {
     private readonly IUserRepository _userRepository;
 
-    public CreateFollowCommandValidator(IUserRepository userRepository)
+    public FollowDtoValidator(IUserRepository userRepository)
     {
         _userRepository = userRepository;
 
-        RuleFor(f => f.Following)
+        RuleFor(f => f.FollowingId)
             .MustAsync(async (following, cancellationToken) =>
             {
                 var userExists = await _userRepository.Exists(following);
 
-                return !userExists;
+                return userExists;
             })
             .WithMessage("{PropertyName} does not exist.");
             
@@ -26,7 +26,7 @@ public class CreateFollowCommandValidator : AbstractValidator<FollowDto>
             {
                 var userExists = await _userRepository.Exists(follower);
 
-                return !userExists;
+                return userExists;
             })
             .WithMessage("{PropertyName} does not exist.");
     }

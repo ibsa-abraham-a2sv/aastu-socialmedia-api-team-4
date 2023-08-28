@@ -22,8 +22,8 @@ public class CreateFollowCommandHandler : IRequestHandler<CreateFollowCommand, F
     
     public async Task<FollowDto> Handle(CreateFollowCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateFollowCommandValidator(_userRepository);
-        var validationResult = validator.Validate(request.FollowDto);
+        var validator = new FollowDtoValidator(_userRepository);
+        var validationResult = await validator.ValidateAsync(request.FollowDto, cancellationToken);
         
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);

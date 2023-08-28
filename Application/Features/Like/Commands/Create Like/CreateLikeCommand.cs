@@ -5,5 +5,5 @@ namespace Application.Features.Like.Commands.Create_Like;
 
 public class CreateLikeCommand : IRequest<LikeDto>
 {
-    public LikeDto? LikeDto { get; set; }
+    public LikeDto LikeDto { get; set; } = null!;
 }

@@ -5,24 +5,14 @@ namespace Application.Features.Like.Commands.Delete_Like;
 
 public class DeleteLikeCommandValidator : AbstractValidator<DeleteLikeCommand>
 {
-    private readonly ILikeRepository _likeRepository;
-
-    public DeleteLikeCommandValidator(ILikeRepository likeRepository)
+    public DeleteLikeCommandValidator(IPostRepository postRepository)
     {
-        _likeRepository = likeRepository;
-        
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("{PropertyName} is required")
-            .GreaterThan(0)
-            .WithMessage("{PropertyName} can't be less than 1");
-        
-        RuleFor(c => c.Id)
+        RuleFor(c => c.PostId)
             .MustAsync(async (id, cancellationToken) =>
             {
-                var likeExists = await _likeRepository.Exists(id);
+                var likeExists = await postRepository.Exists(id);
 
-                return !likeExists;
+                return likeExists;
             })
             .WithMessage("{PropertyName} does not exist.");
     }

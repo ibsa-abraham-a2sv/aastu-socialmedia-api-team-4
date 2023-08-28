@@ -1,14 +1,17 @@
 ﻿using System.Security.Claims;
 using Application.DTOs.Like;
-using Application.Features.Comment.Commands.DeleteComment;
 using Application.Features.Like.Commands.Create_Like;
+using Application.Features.Like.Commands.Delete_Like;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Service;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class LikeController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -19,23 +22,17 @@ public class LikeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<LikeDto>> CreateLike(LikeDto likeDto)
+    public async Task<ActionResult<LikeDto>> CreateLike(int postId)
     {
-        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        if (userIdClaim == null)
-        {
-            throw new Exception("User not authenticated");
-        }
+        var userId = await AuthHelper.GetUserId(User);
             
-        var userId = int.Parse(userIdClaim.Value);
-            
-        if (userId != likeDto.UserId)
-        {
-            throw new Exception("User not authorized");
-        }
         var command = new CreateLikeCommand
         {
-            LikeDto = likeDto
+            LikeDto = new LikeDto
+            {
+                UserId = userId,
+                PostId = postId
+            }
         };
 
         var like = await _mediator.Send(command);
@@ -43,16 +40,19 @@ public class LikeController : ControllerBase
         return CreatedAtAction(null, like);
     }
 
-    [HttpPost("delete/{likeId:int}")]
-    public async Task<ActionResult<Unit>> DeleteLike(int likeId)
+    [HttpPost("delete")]
+    public async Task<ActionResult<Unit>> DeleteLike(int postId)
     {
-        var command = new DeleteCommentCommand
+        var loggedInUser = await AuthHelper.GetUserId(User);
+        
+        var command = new DeleteLikeCommand
         {
-            Id = likeId
+            PostId = postId,
+            UserId = loggedInUser
         };
 
         var result = await _mediator.Send(command);
 
-        return NoContent();
+        return Ok();
     }
 }

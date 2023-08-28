@@ -5,5 +5,5 @@ namespace Application.Features.Follow.Commands.CreateFollow;
 
 public class CreateFollowCommand : IRequest<FollowDto>
 {
-    public FollowDto FollowDto { get; set; }
+    public FollowDto FollowDto { get; set; } = null!;
 }

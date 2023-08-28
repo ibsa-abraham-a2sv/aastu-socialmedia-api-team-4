@@ -1,14 +1,13 @@
 ﻿using Application.Contracts;
-using Application.DTOs.User;
 using FluentValidation;
 
-namespace Application.Features.Follow.Queries.GetFollowers;
+namespace Application.Features.Follow.Queries.GetFollowing;
 
-public class GetFollowersCommandValidator : AbstractValidator<GetFollowersCommand>
+public class GetFollowingCommandValidator : AbstractValidator<GetFollowingCommand>
 {
     private readonly IUserRepository _userRepository;
 
-    public GetFollowersCommandValidator(IUserRepository userRepository)
+    public GetFollowingCommandValidator(IUserRepository userRepository)
     {
         _userRepository = userRepository;
         
