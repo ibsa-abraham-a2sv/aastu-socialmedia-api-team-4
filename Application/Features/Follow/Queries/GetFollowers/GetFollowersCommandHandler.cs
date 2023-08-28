@@ -1,7 +1,6 @@
 ﻿using Application.Contracts;
 using Application.DTOs.User;
 using AutoMapper;
-using Domain.Entities;
 using FluentValidation;
 using MediatR;
 

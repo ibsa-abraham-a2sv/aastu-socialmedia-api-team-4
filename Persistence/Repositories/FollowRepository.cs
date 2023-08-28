@@ -23,10 +23,9 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
         return followers;
     }
 
-    public Task<List<UserEntity>> GetFollowingList(UserEntity userEntity)
+    public async Task<List<UserEntity>> GetFollowingList(int UserId)
     {
-        var following = _dbContext.Follow
-            .Where(f => f.FollowerId == userEntity.Id)
+        var following = await _dbContext.Follow.Where(f => f.FollowerId == UserId)
             .Select(f => f.Following)
             .ToListAsync();
 

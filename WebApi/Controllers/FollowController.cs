@@ -4,7 +4,7 @@ using Application.DTOs.User;
 using Application.Features.Follow.Commands.CreateFollow;
 using Application.Features.Follow.Commands.DeleteFollow;
 using Application.Features.Follow.Queries.GetFollowers;
-using Domain.Entities;
+using Application.Features.Follow.Queries.GetFollowing;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -109,5 +109,28 @@ public class FollowController : ControllerBase
         var followersList = await _mediator.Send(command);
 
         return followersList;
+    }
+
+    [HttpGet]
+    [Route("getFollowing")]
+    public async Task<ActionResult<List<UserResponseDto>>> GetFollowingList()
+    {
+        //todo: change the logged in user fetching to modular one
+        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
+        {
+            throw new Exception("User not authenticated");
+        }
+            
+        var loggedInUser = int.Parse(userIdClaim.Value);
+
+        var command = new GetFollowingCommand
+        {
+            UserId = loggedInUser
+        };
+
+        var followingList = await _mediator.Send(command);
+
+        return followingList;
     }
 }

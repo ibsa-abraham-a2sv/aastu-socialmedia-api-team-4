@@ -22,7 +22,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Auth\" />
-      <Folder Include="Features\Follow\Queries\GetFollowing\" />
       <Folder Include="Features\Like\Queries\" />
     </ItemGroup>
 </Project>
