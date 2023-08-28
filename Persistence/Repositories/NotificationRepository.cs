@@ -16,9 +16,9 @@ public class NotificationRepository : GenericRepository<NotificationEntity>, INo
         _dbContext = dbContext;
     }
 
-    public async Task<NotificationEntity> ToggleNotification(NotificationEntity notificationDto)
+    public async Task<NotificationEntity> ToggleNotification(int notificationId)
     {
-        var notification = _dbContext.Notification.FirstOrDefault(notificationDto);
+        var notification = _dbContext.Notification.FirstOrDefault(n => n.Id == notificationId);
 
         if (notification == null)
             throw new NotFoundException($"Notification not found!", notification);
