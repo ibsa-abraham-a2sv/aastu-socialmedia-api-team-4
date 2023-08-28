@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{876D402E-585F-433B-B672-131BEB2FAFD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{0116BA10-AB71-403F-965E-8CBDC264EC98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialSyncIntegrationTesting.Tests", "SocialSyncIntegrationTesting.Tests\SocialSyncIntegrationTesting.Tests.csproj", "{0116BA10-AB71-403F-965E-8CBDC264EC98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

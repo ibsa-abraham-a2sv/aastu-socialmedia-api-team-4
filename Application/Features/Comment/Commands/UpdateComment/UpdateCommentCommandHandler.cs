@@ -23,25 +23,25 @@ namespace Application.Features.Comment.Commands.UpdateComment
         public async Task<Unit> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
         {
             var validator = new UpdateCommentCommandValidator();
-            var validationResult = validator.Validate(request);
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
             }
             
-            var new_comment = _mapper.Map<CommentEntity>(request.UpdateCommentDTO);
+            var newComment = _mapper.Map<CommentEntity>(request.UpdateCommentDto);
 
-            var old_comment = await _commentRepository.GetByIdAsync(request.Id);
+            var oldComment = await _commentRepository.GetByIdAsync(request.Id);
 
-            if (old_comment == null)
+            if (oldComment == null)
             {
                 throw new Exception($"Comment with id {request.Id} does't exist!");
             }
 
             // we have to check wheather the user id in the comment id is equal to the user currently loggedin
 
-            await _commentRepository.UpdateAsync(request.Id, new_comment);
+            await _commentRepository.UpdateAsync(request.Id, newComment);
             return Unit.Value;
         }
     }

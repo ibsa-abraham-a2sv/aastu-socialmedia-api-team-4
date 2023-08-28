@@ -12,8 +12,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.10" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0"/>
-        <PackageReference Include="xunit" Version="2.4.2"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+        <PackageReference Include="xunit" Version="2.4.2" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -22,20 +22,45 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Moq" Version="4.18.4"/>
-        <PackageReference Include="Shouldly" Version="4.2.1"/>
+        <PackageReference Include="Moq" Version="4.18.4" />
+        <PackageReference Include="Shouldly" Version="4.2.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\Follows\" />
-      <Folder Include="Controllers\Likes\" />
-      <Folder Include="Controllers\Notitfications\" />
-      <Folder Include="Controllers\Posts\" />
-      <Folder Include="Controllers\Users\" />
+      <Content Include="obj\Controllers\.gitkeep" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="obj\Controllers\Comments\CommentControllerCRUDTests.cs" />
+      <Compile Include="obj\Controllers\Comments\CreateCommentValidationTests.cs" />
+      <Compile Include="obj\Controllers\Comments\CustomeWebApplicationFactory.cs" />
+      <Compile Include="obj\Controllers\Comments\DeleteCommentValidationTests.cs" />
+      <Compile Include="obj\Controllers\Comments\UpdateCommentValidationTests.cs" />
+      <Compile Remove="obj\Controllers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="obj\Controllers\Follows\" />
+      <Folder Include="obj\Controllers\Likes\" />
+      <Folder Include="obj\Controllers\Notitfications\" />
+      <Folder Include="obj\Controllers\Posts\" />
+      <Folder Include="obj\Controllers\Users\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\Controllers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\Controllers\**" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\WebApi\WebApi.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="../WebApi/WebApi.csproj" />
     </ItemGroup>
 
 </Project>
