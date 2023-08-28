@@ -11,9 +11,14 @@ namespace Application.Features.Comment.Commands.UpdateComment
     {
         public UpdateCommentCommandValidator() 
         {
-            When(dto => dto.UpdateCommentDTO != null && !string.IsNullOrEmpty(dto.UpdateCommentDTO.Text), () =>
+            When(dto => !string.IsNullOrEmpty(dto.UpdateCommentDto.Text), () =>
             {
-                RuleFor(x => x.UpdateCommentDTO.Text).MinimumLength(10).WithMessage("{PropertyName} must either empty or length of greater than 10");
+                RuleFor(x => x.UpdateCommentDto.Text).MinimumLength(10).WithMessage("{PropertyName} must either empty or length of greater than 10");
+            });
+            
+            When(dto => dto.UpdateCommentDto.PostId != 0, () =>
+            {
+                RuleFor(x => x.UpdateCommentDto.PostId).GreaterThanOrEqualTo(1).WithMessage("{PropertyName} must be greater or equal to than 1");
             });
         }
     }

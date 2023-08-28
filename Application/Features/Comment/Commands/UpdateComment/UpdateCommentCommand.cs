@@ -11,6 +11,6 @@ namespace Application.Features.Comment.Commands.UpdateComment
     public class UpdateCommentCommand : IRequest<Unit>
     {
         public int Id { get; set; }
-        public CommentRequestDTO UpdateCommentDTO{ get; set; } = null!;
+        public CommentRequestDto UpdateCommentDto{ get; set; } = null!;
     }
 }
