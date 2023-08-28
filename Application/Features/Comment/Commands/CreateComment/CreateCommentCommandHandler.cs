@@ -4,13 +4,8 @@ using AutoMapper;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Features.Comment.Commands.DeleteComment
+namespace Application.Features.Comment.Commands.CreateComment
 {
     public class CreateCommentCommandHandler : IRequestHandler<CreateCommentCommand, CommentResponseDTO>
     {
@@ -33,6 +28,7 @@ namespace Application.Features.Comment.Commands.DeleteComment
             }
 
             var comment = _mapper.Map<CommentEntity>(request.commentRequestDTO);
+            comment.UserId = request.userId;
 
             var res = await _commentRepository.CreateAsync(comment);
             return _mapper.Map<CommentResponseDTO>(res);
