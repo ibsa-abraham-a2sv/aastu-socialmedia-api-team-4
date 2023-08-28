@@ -37,6 +37,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,PostRe
         }
 
         var post = _mapper.Map<PostEntity>(command.NewPost);
+        post.UserId = command.UserId;
         var createdPost = await _postRepository.CreateAsync(await CreateTagsAndReturn(post));
 
         return _mapper.Map<PostResponseDto>(createdPost);

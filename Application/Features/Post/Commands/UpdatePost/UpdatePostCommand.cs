@@ -7,5 +7,6 @@ public class UpdatePostCommand : IRequest<Unit>
 {
     public int PostId {get; set;}
     public PostRequestDto? UpdatePost {get; set;}
+    public int UserId {get; set;}
 }
 

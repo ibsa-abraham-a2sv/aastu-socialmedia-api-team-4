@@ -40,6 +40,7 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand,Unit>
         }
 
         var post = _mapper.Map<PostEntity>(command.UpdatePost);
+        post.Id = command.PostId;
         await _postRepository.UpdateAsync(command.PostId,post);
         return Unit.Value;
     }

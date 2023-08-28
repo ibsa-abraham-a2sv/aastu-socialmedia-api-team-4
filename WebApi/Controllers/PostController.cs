@@ -10,6 +10,7 @@ using Application.Features.Post.Queries.SearchPost;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Application.Exceptions;
+using WebApi.Service;
 
 namespace WebApi.Controllers
 {
@@ -61,23 +62,16 @@ namespace WebApi.Controllers
         [Route("CreatePost")]
         public async Task<ActionResult<PostResponseDto>> CreatePost(PostRequestDto postRequest)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
+            var userId = await AuthHelper.GetUserId(User);
+            var command = new CreatePostCommand
             {
-                throw new Exception("User not authenticated");
-            }
-            
-            var userId = int.Parse(userIdClaim.Value);
-            
-            if (userId != postRequest.UserId)
-            {
-                throw new Exception("User not authorized");
-            }
-            var command = new CreatePostCommand{NewPost = postRequest};
-            var Post = await _mediator.Send(command);
+                UserId = userId,
+                NewPost = postRequest
+            };
+            var post = await _mediator.Send(command);
 
-
-            return CreatedAtAction(nameof(GetSinglePost), new{Id = Post.Id}, Post);
+            return Ok("created");
+            // return CreatedAtAction(nameof(GetSinglePost), new{Id = post.Id}, post);
         }
 
         [HttpPut]
@@ -85,22 +79,11 @@ namespace WebApi.Controllers
         public async Task<ActionResult> UpdatePost(int id, PostRequestDto PostRequest)
         {
             var post = await _mediator.Send(new GetSinglePostRequest{PostId = id});
-            
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                throw new Exception("User not authenticated");
-            }
-            
-            var userId = int.Parse(userIdClaim.Value);
-            
-            if (userId != post.UserId)
-            {
-                throw new Exception("User not authorized");
-            }
+            var userId = await AuthHelper.CheckUserById(User, post.UserId);
             
             var command = new UpdatePostCommand
             {
+                UserId = userId,
                 PostId = id,
                 UpdatePost = PostRequest
             };
@@ -114,19 +97,7 @@ namespace WebApi.Controllers
         public async Task<ActionResult> DeletePost(int id)
         {
             var post = await _mediator.Send(new GetSinglePostRequest{PostId = id});
-            
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                throw new Exception("User not authenticated");
-            }
-            
-            var userId = int.Parse(userIdClaim.Value);
-            
-            if (userId != post.UserId)
-            {
-                throw new Exception("User not authorized");
-            }
+            await AuthHelper.CheckUserById(User, post.UserId);
             
             await _mediator.Send(new DeletePostCommand { PostId = id });
             return NoContent();
