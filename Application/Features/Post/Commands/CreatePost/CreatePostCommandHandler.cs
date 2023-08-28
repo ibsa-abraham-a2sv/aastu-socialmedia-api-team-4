@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Contracts;
+using Application.DTOs.Post;
 using Application.Exceptions;
 using AutoMapper;
 using Domain.Entities;
@@ -11,7 +12,7 @@ using MediatR;
 
 namespace Application.Features.Post.Commands.CreatePost;
 
-public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,Unit>
+public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,PostResponseDto>
 {
     private readonly IMapper _mapper;
     private readonly IPostRepository _postRepository;
@@ -26,7 +27,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,Unit>
         _tagRepository = tagRepository;
     }
 
-    public async Task<Unit> Handle(CreatePostCommand command, CancellationToken cancellationToken)
+    public async Task<PostResponseDto> Handle(CreatePostCommand command, CancellationToken cancellationToken)
     {
         var validator = new CreatePostCommandValidator(_userRepository){UserRepository = _userRepository};
         var validationResult = await validator.ValidateAsync(command, cancellationToken);
@@ -36,9 +37,10 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,Unit>
         }
 
         var post = _mapper.Map<PostEntity>(command.NewPost);
-        await _postRepository.CreateAsync(await CreateTagsAndReturn(post));
+        post.UserId = command.UserId;
+        var createdPost = await _postRepository.CreateAsync(await CreateTagsAndReturn(post));
 
-        return Unit.Value;
+        return _mapper.Map<PostResponseDto>(createdPost);
     }
 
     private async Task<PostEntity> CreateTagsAndReturn(PostEntity entity)
