@@ -26,7 +26,7 @@ public class DeleteLikeCommandHandler : IRequestHandler<DeleteLikeCommand, bool>
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        await _likeRepository.DeleteLikeByPostId(request.PostId);
+        await _likeRepository.DeleteLikeByPostId(request.PostId, request.UserId);
 
         return true;
     }

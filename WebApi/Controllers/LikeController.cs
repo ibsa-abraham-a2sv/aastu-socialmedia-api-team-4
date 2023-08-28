@@ -5,6 +5,7 @@ using Application.Features.Like.Commands.Delete_Like;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Service;
 
 namespace WebApi.Controllers;
 
@@ -23,19 +24,8 @@ public class LikeController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<LikeDto>> CreateLike(int postId)
     {
-        //todo: change the logged in user fetching to modular one
-        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        if (userIdClaim == null)
-        {
-            throw new Exception("User not authenticated");
-        }
+        var userId = await AuthHelper.GetUserId(User);
             
-        var userId = int.Parse(userIdClaim.Value);
-            
-        // if (userId != likeDto.UserId)
-        // {
-        //     throw new Exception("User not authorized");
-        // }
         var command = new CreateLikeCommand
         {
             LikeDto = new LikeDto
@@ -53,9 +43,12 @@ public class LikeController : ControllerBase
     [HttpPost("delete")]
     public async Task<ActionResult<Unit>> DeleteLike(int postId)
     {
+        var loggedInUser = await AuthHelper.GetUserId(User);
+        
         var command = new DeleteLikeCommand
         {
-            PostId = postId
+            PostId = postId,
+            UserId = loggedInUser
         };
 
         var result = await _mediator.Send(command);

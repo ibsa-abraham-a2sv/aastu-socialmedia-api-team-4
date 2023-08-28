@@ -38,9 +38,9 @@ public class LikeRepository : GenericRepository<LikeEntity>, ILikeRepository
         return like.Entity;
     }
 
-    public async Task<bool> DeleteLikeByPostId(int postId)
+    public async Task<bool> DeleteLikeByPostId(int postId, int userId)
     {
-        var like = await _dbContext.Like.FirstOrDefaultAsync(l => l.PostId == postId);
+        var like = await _dbContext.Like.FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
 
         if (like == null)
             throw new NotFoundException($"{postId} post not found", postId); 
