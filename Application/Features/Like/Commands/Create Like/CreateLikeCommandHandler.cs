@@ -10,19 +10,21 @@ namespace Application.Features.Like.Commands.Create_Like;
 public class CreateLikeCommandHandler : IRequestHandler<CreateLikeCommand, LikeDto>
 {
     private readonly ILikeRepository _likeRepository;
+    private readonly IPostRepository _postRepository;
     private readonly IMapper _mapper;
 
-    public CreateLikeCommandHandler(ILikeRepository likeRepository, IMapper mapper)
+    public CreateLikeCommandHandler(ILikeRepository likeRepository, IPostRepository postRepository, IMapper mapper)
     {
         _likeRepository = likeRepository;
+        _postRepository = postRepository;
         _mapper = mapper;
     }
 
 
     public async Task<LikeDto> Handle(CreateLikeCommand request, CancellationToken cancellationToken)
     {
-        var validator = new CreateLikeCommandValidator();
-        var validationResult = validator.Validate(request);
+        var validator = new CreateLikeCommandValidator(_postRepository);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -31,7 +33,7 @@ public class CreateLikeCommandHandler : IRequestHandler<CreateLikeCommand, LikeD
         
         var like = _mapper.Map<LikeEntity>(request.LikeDto);
         ;
-        like = await _likeRepository.CreateAsync(like);
+        like = await _likeRepository.CreateLike(like);
 
         return _mapper.Map<LikeDto>(like);
     }

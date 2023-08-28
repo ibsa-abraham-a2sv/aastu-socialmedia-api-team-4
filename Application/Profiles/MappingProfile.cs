@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOs.Like;
 using Application.DTOs.Tag;
 using Application.DTOs.User;
 
@@ -65,6 +66,14 @@ namespace Application.Profiles
             }));
             
             CreateMap<TagEntity, TagRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
+                if (srcMember is int value && value == 0)
+                {
+                    return false;
+                }
+                return srcMember != null;
+            }));
+            
+            CreateMap<LikeEntity, LikeDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
                 if (srcMember is int value && value == 0)
                 {
                     return false;

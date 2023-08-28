@@ -6,5 +6,6 @@ namespace Application.Contracts;
 
 public interface ILikeRepository : IGenericRepository<LikeEntity>
 {
-    
+    public Task<LikeEntity> CreateLike(LikeEntity likeEntity);
+    public Task<bool> DeleteLikeByPostId(int PostId);
 }
