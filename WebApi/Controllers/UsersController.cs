@@ -13,6 +13,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Service;
+
 // using System.Web;
 
 namespace WebApi.Controllers
@@ -71,19 +73,7 @@ namespace WebApi.Controllers
         [HttpPut("updatePassword")]
         public async Task<ActionResult<Unit>> UpdatePassword(AuthRequest authRequest)
         {
-            var userEmailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-            if (userEmailClaim == null)
-            {
-                throw new Exception("User not authenticated");
-            }
-            
-            var userEmail = userEmailClaim.Value;
-            
-            if (userEmail != authRequest.Email)
-            {
-                throw new Exception("User not authorized");
-            }
-            
+            await AuthHelper.CheckUserByEmail(User, authRequest.Email);
             var response = await _mediator.Send(new UpdateUserPasswordCommand
             {
                  AuthRequest = authRequest
@@ -94,18 +84,7 @@ namespace WebApi.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<Unit>> UpdateUser(int id, UserUpdateRequestDto userDto)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                throw new Exception("User not authenticated");
-            }
-            
-            var userId = int.Parse(userIdClaim.Value);
-            
-            if (userId != id)
-            {
-                throw new Exception("User not authorized");
-            }
+            await AuthHelper.CheckUserById(User, id);
             
             var response = await _mediator.Send(new UpdateUserCommand
             {
@@ -118,18 +97,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id:int}")]
         public async Task DeleteUser(int id)
         {
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                throw new Exception("User not authenticated");
-            }
-            
-            var userId = int.Parse(userIdClaim.Value);
-            
-            if (userId != id)
-            {
-                throw new Exception("User not authorized");
-            }
+            await AuthHelper.CheckUserById(User, id);
             
             await _mediator.Send(new DeleteUserCommand
             {

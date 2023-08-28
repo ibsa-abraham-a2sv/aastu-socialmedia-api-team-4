@@ -30,7 +30,7 @@ public class AuthMiddleware
             if (userIdClaim == null)
             {
                 context.Response.StatusCode = 401; // Unauthorized
-                await context.Response.WriteAsync("User not authenticated");
+                await context.Response.WriteAsJsonAsync("User not authenticated");
                 return;
             }
         }
