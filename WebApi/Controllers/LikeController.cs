@@ -40,10 +40,8 @@ public class LikeController : ControllerBase
 
         var like = await _mediator.Send(command);
 
-        if (like != null)
-        {
+        
             await _notificationService.PostIsLiked(postId, userId);
-        }
 
         return CreatedAtAction(null, like);
     }

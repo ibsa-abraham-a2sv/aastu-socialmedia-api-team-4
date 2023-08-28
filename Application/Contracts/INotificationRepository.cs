@@ -7,6 +7,6 @@ namespace Application.Contracts;
 
 public interface INotificationRepository : IGenericRepository<NotificationEntity>
 {
-    public Task<NotificationEntity> ToggleNotification (NotificationEntity notificationDto);
+    public Task<NotificationEntity> ToggleNotification (int notificationId);
     public Task<List<NotificationEntity>> GetNotificationsOfUser(int userId);
 }
