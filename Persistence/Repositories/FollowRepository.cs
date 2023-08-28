@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories;
@@ -30,5 +31,29 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
             .ToListAsync();
 
         return following;
+    }
+
+    public async Task<bool> DeleteFollow(FollowEntity followEntity)
+    {
+        var follow = await _dbContext.Follow.FirstOrDefaultAsync(
+            f => f.FollowerId == followEntity.FollowerId && f.FollowingId == followEntity.FollowingId
+        );
+
+        if (follow == null)
+            return false;
+
+        _dbContext.Follow.Remove(follow);
+        await _dbContext.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> FollowExists(int followerId, int followingId)
+    {
+        var follow = await _dbContext.Follow.FirstOrDefaultAsync(
+            f => f.FollowerId == followerId && f.FollowingId == followingId
+        );
+
+        return follow != null;
     }
 }

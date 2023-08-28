@@ -23,7 +23,7 @@ public class GetFollowersCommandHandler : IRequestHandler<GetFollowersCommand, L
     public async Task<List<UserResponseDto>> Handle(GetFollowersCommand request, CancellationToken cancellationToken)
     {
         var validator = new GetFollowersCommandValidator(_userRepository);
-        var validationResult = validator.Validate(request);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);

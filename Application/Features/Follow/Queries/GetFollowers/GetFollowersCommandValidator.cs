@@ -17,7 +17,7 @@ public class GetFollowersCommandValidator : AbstractValidator<GetFollowersComman
             {
                 var userExists = await _userRepository.Exists(id);
 
-                return !userExists;
+                return userExists;
             })
             .WithMessage("{PropertyName} does not exist.");
     }

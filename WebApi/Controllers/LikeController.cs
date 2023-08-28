@@ -1,15 +1,16 @@
 ﻿using System.Security.Claims;
 using Application.DTOs.Like;
-using Application.Features.Comment.Commands.DeleteComment;
 using Application.Features.Like.Commands.Create_Like;
 using Application.Features.Like.Commands.Delete_Like;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class LikeController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -22,6 +23,7 @@ public class LikeController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<LikeDto>> CreateLike(int postId)
     {
+        //todo: change the logged in user fetching to modular one
         var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
         if (userIdClaim == null)
         {
