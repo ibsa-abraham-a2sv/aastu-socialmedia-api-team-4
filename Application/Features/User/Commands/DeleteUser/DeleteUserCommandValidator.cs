@@ -18,8 +18,8 @@ public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
             .MustAsync(async (id, token) =>
             {
                 var userExists = await _userRepository.Exists(id);
-                return !userExists;
+                return userExists;
             })
-            .WithMessage("{PropertyName} can't be less than 1");
+            .WithMessage("{PropertyName} does not exist");
     }
 }

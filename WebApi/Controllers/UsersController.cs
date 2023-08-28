@@ -1,18 +1,25 @@
-﻿using Application.DTOs.User;
+﻿using System.Security.Claims;
+using Application.DTOs.Auth;
+using Application.DTOs.User;
 using Application.Features.User.Commands.CreateUser;
+using Application.Features.User.Commands.DeleteUser;
+using Application.Features.User.Commands.UpdateUser;
+using Application.Features.User.Commands.UpdateUserPassword;
+using Application.Features.User.Commands.VerifyUser;
 using Application.Features.User.Queries.GetAllUsers;
 using Application.Features.User.Queries.GetSingleUser;
-using Application.Features.User.Queries.Login;
+// using Application.Features.User.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+// using System.Web;
 
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
         public UsersController(IMediator mediator)
@@ -49,12 +56,91 @@ namespace WebApi.Controllers
             });
             return response;
         }
-
-        [HttpPost("login")]
-        public async Task<ActionResult<AuthResponse>> Login(UserRequestDto query)
+        
+        [HttpGet("verify")]
+        public async Task<ActionResult<bool>> VerifyUser([FromQuery] string email, [FromQuery] string token)
         {
-            var response = await _mediator.Send(new LoginQuery {  User = query});
+            var response = await _mediator.Send(new VerifyUserCommand
+            {
+                Email = email,
+                Token = token
+            });
             return response;
         }
+        
+        [HttpPut("updatePassword")]
+        public async Task<ActionResult<Unit>> UpdatePassword(AuthRequest authRequest)
+        {
+            var userEmailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            if (userEmailClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userEmail = userEmailClaim.Value;
+            
+            if (userEmail != authRequest.Email)
+            {
+                throw new Exception("User not authorized");
+            }
+            
+            var response = await _mediator.Send(new UpdateUserPasswordCommand
+            {
+                 AuthRequest = authRequest
+            });
+            return response;
+        }
+        
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Unit>> UpdateUser(int id, UserUpdateRequestDto userDto)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != id)
+            {
+                throw new Exception("User not authorized");
+            }
+            
+            var response = await _mediator.Send(new UpdateUserCommand
+            {
+                Id = id,
+                UserDto = userDto
+            });
+            return response;
+        }
+        
+        [HttpDelete("{id:int}")]
+        public async Task DeleteUser(int id)
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                throw new Exception("User not authenticated");
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            
+            if (userId != id)
+            {
+                throw new Exception("User not authorized");
+            }
+            
+            await _mediator.Send(new DeleteUserCommand
+            {
+                UserID = id
+            });
+        }
+        // [HttpPost("login")]
+        // public async Task<ActionResult<AuthResponse>> Login(UserRequestDto query)
+        // {
+        //     var response = await _mediator.Send(new LoginQuery {  User = query});
+        //     return response;
+        // }
     }
 }

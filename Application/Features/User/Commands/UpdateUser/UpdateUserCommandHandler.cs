@@ -28,8 +28,8 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
         }
         
         var user = await _userRepository.GetByIdAsync(request.Id);
-        _mapper.Map(request.UserDto, user);
-        await _userRepository.UpdateAsync(user.Id, user);
+        var userEntity = _mapper.Map<UserEntity>(user);
+        await _userRepository.UpdateAsync(userEntity.Id, userEntity);
         return Unit.Value;
     }
 }
