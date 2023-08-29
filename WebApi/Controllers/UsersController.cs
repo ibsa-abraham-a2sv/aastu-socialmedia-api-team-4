@@ -46,7 +46,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<int>> Register(UserRequestDto userDto)
+        public async Task<ActionResult<int>> Register(UserRequestDto userDto, IFormFile files)
         {
             if (userDto == null)
             {
