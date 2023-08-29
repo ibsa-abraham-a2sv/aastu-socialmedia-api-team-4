@@ -9,4 +9,5 @@ public interface IUserConnectionRepository
     public Task<UserConnectionEntity> DeleteAsync(int UserId);
     public Task<bool> ExistsAsync(int UserId);
     public Task<UserConnectionEntity> GetUserConnection(int UserId);
+    public Task CleanUpMapping(int UserId);
 }

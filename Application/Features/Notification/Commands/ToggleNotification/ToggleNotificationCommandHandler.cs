@@ -23,15 +23,13 @@ public class ToggleNotificationCommandHandler : IRequestHandler<ToggleNotificati
     
     public async Task<NotificationDto> Handle(ToggleNotificationCommand request, CancellationToken cancellationToken)
     {
-        var validator = new NotificationValidator(_userRepository);
-        var validationResults = validator.Validate(request.NotificationDto);
+        var validator = new ToggleNotificationValidator(_notificationRepository);
+        var validationResults = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validationResults.IsValid)
             throw new ValidationException(validationResults.Errors);
 
-        var notification = _mapper.Map<NotificationEntity>(request.NotificationDto);
-
-        var tNotification = await _notificationRepository.ToggleNotification(notification);
+        var tNotification = await _notificationRepository.ToggleNotification(request.NotificationId);
 
         return _mapper.Map<NotificationDto>(tNotification);
     }

@@ -33,8 +33,8 @@ public class CreateLikeCommandHandler : IRequestHandler<CreateLikeCommand, LikeD
         
         var like = _mapper.Map<LikeEntity>(request.LikeDto);
         ;
-        like = await _likeRepository.CreateLike(like);
+        var newLike = await _likeRepository.CreateLike(like);
 
-        return _mapper.Map<LikeDto>(like);
+        return _mapper.Map<LikeDto>(newLike);
     }
 }

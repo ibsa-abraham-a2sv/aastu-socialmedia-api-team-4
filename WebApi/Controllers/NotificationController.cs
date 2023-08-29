@@ -6,6 +6,7 @@ using Application.Features.Notification.Queries.GetNotifications;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Service;
 
 namespace WebApi.Controllers;
 
@@ -34,23 +35,13 @@ public class NotificationController : ControllerBase
     }
 
     [HttpPost("toggle")]
-    public async Task<ActionResult<NotificationDto>> ToggleNotification(NotificationDto notificationDto)
+    public async Task<ActionResult<NotificationDto>> ToggleNotification(int notificationId)
     {
-        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        if (userIdClaim == null)
-        {
-            throw new Exception("User not authenticated");
-        }
+        var userId = await AuthHelper.GetUserId(User);
             
-        var userId = int.Parse(userIdClaim.Value);
-            
-        if (userId != notificationDto.UserId)
-        {
-            throw new Exception("User not authorized");
-        }
         var command = new ToggleNotificationCommand
         {
-            NotificationDto = notificationDto
+            NotificationId = notificationId
         };
 
         var result = await _mediator.Send(command);

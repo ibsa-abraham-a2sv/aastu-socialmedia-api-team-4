@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using WebApi.Service;
+using WebApi.Service.NotificationService;
 
 namespace WebApi.Controllers
 {
@@ -21,10 +22,12 @@ namespace WebApi.Controllers
     {
 
         private readonly IMediator _mediator;
+        private readonly INotificationService _notificationService;
 
-        public CommentsController(IMediator mediator)
+        public CommentsController(IMediator mediator, INotificationService notificationService)
         {
             _mediator = mediator;
+            _notificationService = notificationService;
         }
 
         [HttpGet("all")]
@@ -62,6 +65,11 @@ namespace WebApi.Controllers
                 commentRequestDTO = commentRequest
             };
             var comment = await _mediator.Send(command);
+
+            if (comment != null)
+            {
+                await _notificationService.PostIsCommentedOn(commentRequest.PostId, userId);
+            }
 
             return CreatedAtAction(nameof(Get), comment.Id, comment);
         }

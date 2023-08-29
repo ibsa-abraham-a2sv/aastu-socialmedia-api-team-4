@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Service;
+using WebApi.Service.NotificationService;
 
 namespace WebApi.Controllers;
 
@@ -15,10 +16,12 @@ namespace WebApi.Controllers;
 public class LikeController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly INotificationService _notificationService;
 
-    public LikeController(IMediator mediator)
+    public LikeController(IMediator mediator, INotificationService notificationService)
     {
         _mediator = mediator;
+        _notificationService = notificationService;
     }
 
     [HttpPost]
@@ -36,6 +39,9 @@ public class LikeController : ControllerBase
         };
 
         var like = await _mediator.Send(command);
+
+        
+            await _notificationService.PostIsLiked(postId, userId);
 
         return CreatedAtAction(null, like);
     }

@@ -8,6 +8,7 @@ using Application.Features.Follow.Queries.GetFollowing;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Service.NotificationService;
 
 namespace WebApi.Controllers;
 
@@ -17,10 +18,12 @@ namespace WebApi.Controllers;
 public class FollowController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly INotificationService _notificationService;
 
-    public FollowController(IMediator mediator)
+    public FollowController(IMediator mediator, INotificationService notificationService)
     {
         _mediator = mediator;
+        _notificationService = notificationService;
     }
     
     [HttpPost]
@@ -51,6 +54,11 @@ public class FollowController : ControllerBase
         };
 
         var follow = await _mediator.Send(command);
+
+        if (follow != null)
+        {
+            await _notificationService.UserIsFollowed(loggedInUser, followingUserId);
+        }
 
         return Ok(follow);
     }
