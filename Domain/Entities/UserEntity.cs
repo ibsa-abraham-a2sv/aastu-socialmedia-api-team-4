@@ -13,6 +13,10 @@ public class UserEntity : BaseDomainEntity
     public bool IsVerified { get; set; } = false;
     public string UserName { get; set; } = null!;
     public string Password { get; set; } = null!;
+    public string? ProfilePicture { get; set; }
+    public string? ConfirmationCode { get; set; }
+    public DateTime? ConfirmationCodeExpiration { get; set; }
+    
     public DateTime DateOfBirth { get; set; }
     public List<UserEntity> Followers { get; set; } = new List<UserEntity>();
     public List<UserEntity> Following { get; set; } = new List<UserEntity>();

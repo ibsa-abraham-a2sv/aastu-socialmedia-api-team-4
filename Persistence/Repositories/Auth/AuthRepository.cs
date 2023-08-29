@@ -13,6 +13,7 @@ public class AuthRepository : IAuth
 {
     private readonly AppDBContext _dbContext;
     private readonly JwtSettings _jwtSettings;
+    // private readonly I
     
     public AuthRepository(AppDBContext dbContext, IConfiguration configuration)
     {

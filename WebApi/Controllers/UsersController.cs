@@ -45,20 +45,6 @@ namespace WebApi.Controllers
             return users;
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<int>> Register(UserRequestDto userDto, IFormFile files)
-        {
-            if (userDto == null)
-            {
-                throw new Exception("");
-            }
-            var response = await _mediator.Send(new CreateUserCommand
-            {
-                UserDto = userDto
-            });
-            return response;
-        }
-        
         [HttpGet("verify")]
         public async Task<ActionResult<bool>> VerifyUser([FromQuery] string email, [FromQuery] string token)
         {
