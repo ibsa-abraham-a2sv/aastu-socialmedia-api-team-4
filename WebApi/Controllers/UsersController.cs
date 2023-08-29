@@ -5,6 +5,7 @@ using Application.Features.User.Commands.CreateUser;
 using Application.Features.User.Commands.DeleteUser;
 using Application.Features.User.Commands.UpdateUser;
 using Application.Features.User.Commands.UpdateUserPassword;
+using Application.Features.User.Commands.UploadProfilePicture;
 using Application.Features.User.Commands.VerifyUser;
 using Application.Features.User.Queries.GetAllUsers;
 using Application.Features.User.Queries.GetSingleUser;
@@ -90,11 +91,19 @@ namespace WebApi.Controllers
                 UserID = id
             });
         }
-        // [HttpPost("login")]
-        // public async Task<ActionResult<AuthResponse>> Login(UserRequestDto query)
-        // {
-        //     var response = await _mediator.Send(new LoginQuery {  User = query});
-        //     return response;
-        // }
+
+        [HttpPost("UploadProfilePicture")]
+        public async Task<ActionResult<bool>> UploadProfilePicture(IFormFile photo)
+        {
+            var userId = await AuthHelper.GetUserId(User);
+
+            await _mediator.Send(new UploadProfilePictureCommand
+            {
+                Photo = photo,
+                UserId = userId
+            });
+                
+            return true;
+        }
     }
 }

@@ -1,6 +1,4 @@
-using System.Diagnostics.Contracts;
-
-namespace Infrastructure.Mail;
+namespace Infrastructure.FileUpload;
 
 public class CloudinaryUrl
 {
