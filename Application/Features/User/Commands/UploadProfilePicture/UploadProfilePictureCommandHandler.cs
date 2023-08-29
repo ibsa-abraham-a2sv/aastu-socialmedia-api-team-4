@@ -35,6 +35,9 @@ public class UploadProfilePictureCommandHandler : IRequestHandler<UploadProfileP
             throw new Exception("Problem uploading image");
         }
 
+        user.ProfilePicture = request.Photo.FileName + " " + request.Photo.Name + " " + uploadResult.Url;
+        await _userRepository.UpdateAsync(user.Id, user);
+
         return true;
     }
 }
