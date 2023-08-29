@@ -18,7 +18,7 @@ public class NotificationRepository : GenericRepository<NotificationEntity>, INo
 
     public async Task<NotificationEntity> ToggleNotification(int notificationId)
     {
-        var notification = _dbContext.Notification.FirstOrDefault(n => n.Id == notificationId);
+        var notification = _dbContext.Notifications.FirstOrDefault(n => n.Id == notificationId);
 
         if (notification == null)
             throw new NotFoundException($"Notification not found!", notification);
@@ -32,7 +32,7 @@ public class NotificationRepository : GenericRepository<NotificationEntity>, INo
 
     public async Task<List<NotificationEntity>> GetNotificationsOfUser(int userId)
     {
-        var notifications = await _dbContext.Notification
+        var notifications = await _dbContext.Notifications
             .Where(n => n.UserId == userId)
             .OrderByDescending(n => n.CreatedAt)
             .ToListAsync();

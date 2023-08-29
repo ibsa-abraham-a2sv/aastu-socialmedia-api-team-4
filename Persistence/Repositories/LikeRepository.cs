@@ -20,13 +20,13 @@ public class LikeRepository : GenericRepository<LikeEntity>, ILikeRepository
     {
         // check if the like already exists
         var likeExists =
-            await _dbContext.Like.FirstOrDefaultAsync(l =>
+            await _dbContext.Likes.FirstOrDefaultAsync(l =>
                 l.UserId == likeEntity.UserId && l.PostId == likeEntity.PostId);
 
         if (likeEntity != null)
             return likeExists;
         
-        var like = await _dbContext.Like.AddAsync(likeEntity);
+        var like = await _dbContext.Likes.AddAsync(likeEntity);
         await _dbContext.SaveChangesAsync();
 
         var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == likeEntity.PostId);
@@ -42,12 +42,12 @@ public class LikeRepository : GenericRepository<LikeEntity>, ILikeRepository
 
     public async Task<bool> DeleteLikeByPostId(int postId, int userId)
     {
-        var like = await _dbContext.Like.FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
+        var like = await _dbContext.Likes.FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
 
         if (like == null)
             throw new NotFoundException($"{postId} post not found", postId); 
 
-        _dbContext.Like.Remove(like);
+        _dbContext.Likes.Remove(like);
         await _dbContext.SaveChangesAsync();
         
         var post = await _dbContext.Posts.FirstOrDefaultAsync(p => p.Id == postId);

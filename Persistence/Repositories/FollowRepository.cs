@@ -16,7 +16,7 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
 
     public Task<List<UserEntity>> GetFollowersList(int UserId)
     {
-        var followers = _dbContext.Follow.Where(f => f.FollowingId == UserId)
+        var followers = _dbContext.Follows.Where(f => f.FollowingId == UserId)
             .Select(f => f.Follower)
             .ToListAsync();
 
@@ -25,7 +25,7 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
 
     public async Task<List<UserEntity>> GetFollowingList(int UserId)
     {
-        var following = await _dbContext.Follow.Where(f => f.FollowerId == UserId)
+        var following = await _dbContext.Follows.Where(f => f.FollowerId == UserId)
             .Select(f => f.Following)
             .ToListAsync();
 
@@ -34,14 +34,14 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
 
     public async Task<bool> DeleteFollow(FollowEntity followEntity)
     {
-        var follow = await _dbContext.Follow.FirstOrDefaultAsync(
+        var follow = await _dbContext.Follows.FirstOrDefaultAsync(
             f => f.FollowerId == followEntity.FollowerId && f.FollowingId == followEntity.FollowingId
         );
 
         if (follow == null)
             return false;
 
-        _dbContext.Follow.Remove(follow);
+        _dbContext.Follows.Remove(follow);
         await _dbContext.SaveChangesAsync();
 
         return true;
@@ -49,7 +49,7 @@ public class FollowRepository : GenericRepository<FollowEntity>, IFollowReposito
 
     public async Task<bool> FollowExists(int followerId, int followingId)
     {
-        var follow = await _dbContext.Follow.FirstOrDefaultAsync(
+        var follow = await _dbContext.Follows.FirstOrDefaultAsync(
             f => f.FollowerId == followerId && f.FollowingId == followingId
         );
 
