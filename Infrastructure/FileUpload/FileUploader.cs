@@ -17,7 +17,7 @@ public class FileUploader : IFileUploader
         _cloudinary = new Cloudinary(cloudinaryUrl1.cloudinaryUrl);
     }
 
-    public async Task<ImageUploadResult> UploadImage(IFormFile file, string folderName)
+    public async Task<string> UploadImage(IFormFile file, string folderName)
     {
         var uploadParams = new ImageUploadParams()
         {
@@ -25,7 +25,7 @@ public class FileUploader : IFileUploader
             Folder = folderName,
         };
         var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-        return uploadResult;
+        return uploadResult.Url.ToString();
     }
 
     public Task<ImageUploadResult> UploadVideo(IFormFile file, string folderName)
