@@ -60,7 +60,7 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("CreatePost")]
-        public async Task<ActionResult<PostResponseDto>> CreatePost(PostRequestDto postRequest)
+        public async Task<ActionResult<PostResponseDto>> CreatePost([FromForm]  PostRequestDto postRequest)
         {
             var userId = await AuthHelper.GetUserId(User);
             var command = new CreatePostCommand
