@@ -5,6 +5,6 @@ namespace Application.Contracts.Services;
 
 public interface IFileUploader
 {
-    Task<string> UploadImage(IFormFile file, string folderName);
+    Task<ImageUploadResult> UploadImage(IFormFile file, string folderName);
     Task<ImageUploadResult> UploadVideo(IFormFile file, string folderName);
 }

@@ -28,14 +28,14 @@ public class UploadProfilePictureCommandHandler : IRequestHandler<UploadProfileP
         }
         
         var user = await _userRepository.GetByIdAsync(request.UserId);
-        var uploadResult = await _fileUploader.UploadImage(request.Photo, user.UserName);
+        var uploadResult = await _fileUploader.UploadImage(request.Photo, $"{user.UserName}/profile/");
         
         if (uploadResult.StatusCode != HttpStatusCode.OK)
         {
             throw new Exception("Problem uploading image");
         }
 
-        user.ProfilePicture = request.Photo.FileName + " " + request.Photo.Name + " " + uploadResult.Url;
+        user.ProfilePicture = uploadResult.Url.ToString();
         await _userRepository.UpdateAsync(user.Id, user);
 
         return true;

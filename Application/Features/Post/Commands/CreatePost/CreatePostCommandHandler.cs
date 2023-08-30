@@ -41,9 +41,12 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,PostRe
 
         var post = _mapper.Map<PostEntity>(command.NewPost);
         post.UserId = command.UserId;
-        
+
         if(command.NewPost.PictureFile != null){
-            post.PicturePath = await _fileUploader.UploadImage(command.NewPost.PictureFile,"");
+
+            var user = await _userRepository.GetByIdAsync(command.UserId);
+            var res = await _fileUploader.UploadImage(command.NewPost.PictureFile,$"{user.UserName}/post/");
+             post.PicturePath = res.Url.ToString();
         }
         var createdPost = await _postRepository.CreateAsync(await CreateTagsAndReturn(post));
 
