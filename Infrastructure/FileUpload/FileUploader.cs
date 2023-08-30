@@ -1,12 +1,10 @@
 using Application.Contracts.Services;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using Infrastructure.Mail;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace Infrastructure;
+namespace Infrastructure.FileUpload;
 
 public class FileUploader : IFileUploader
 {

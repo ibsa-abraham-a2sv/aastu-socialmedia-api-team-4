@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.Infrastructure;
 using Application.Contracts.Services;
+using Infrastructure.FileUpload;
 using Infrastructure.Mail;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

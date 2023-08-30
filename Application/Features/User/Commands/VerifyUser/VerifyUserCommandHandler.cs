@@ -36,6 +36,7 @@ public class VerifyUserCommandHandler : IRequestHandler<VerifyUserCommand, bool>
         else
         {
             user.IsVerified = true;
+            user.Token = Guid.NewGuid().ToString();
             await _userRepository.UpdateAsync(user.Id, user);
             return true;
         }
