@@ -1,6 +1,7 @@
 
 using Application.Contracts;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Post.Commands.CreatePost;
 
@@ -17,10 +18,6 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
 
         When(x => x.NewPost != null, () =>
         {
-            RuleFor(x => x.UserId)
-                .NotEmpty().WithMessage("{PropertyName} is Required")
-                .MustAsync(UserIdExists).WithMessage("Invalid {PropertyName}");
-
             RuleFor(x => x.NewPost.Title)
                 .NotEmpty().WithMessage("{PropertyName} is Required")
                 .Length(1, 50).WithMessage("{PropertyName} can't be less than 1");
@@ -28,12 +25,28 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
             RuleFor(x => x.NewPost.Content)
                 .NotEmpty().WithMessage("{PropertyName} is Required")
                 .Length(1, 500).WithMessage("{PropertyName} can't be less than 1");
+
+            RuleFor(x => x.NewPost.PictureFile)
+                .Must(BeAValidImageFile).WithMessage("Invalid image file.");
         });
         
     }
-
-    private async Task<bool> UserIdExists(int UserId, CancellationToken token)
+    private bool BeAValidImageFile(IFormFile file)
     {
-        return await UserRepository.Exists(UserId);
+        if (file == null)
+            return true;
+
+        // Define a list of allowed content types and file extensions for images
+        var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+
+        // Check if the content type and file extension are valid
+        if (!allowedContentTypes.Contains(file.ContentType) || 
+            !allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLower()))
+        {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Contracts;
+using Application.Contracts.Services;
 using Application.DTOs.Post;
 using Application.Exceptions;
 using AutoMapper;
@@ -18,13 +19,15 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,PostRe
     private readonly IPostRepository _postRepository;
     private readonly IUserRepository _userRepository;
     private readonly ITagRepository _tagRepository;
+    private readonly IFileUploader _fileUploader;
     
-    public CreatePostCommandHandler(IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
+    public CreatePostCommandHandler(IFileUploader fileUploader, IPostRepository postRepository, IUserRepository userRepository, ITagRepository tagRepository, IMapper mapper)
     {
         _mapper = mapper;
         _postRepository = postRepository;
         _userRepository = userRepository;
         _tagRepository = tagRepository;
+        _fileUploader = fileUploader;
     }
 
     public async Task<PostResponseDto> Handle(CreatePostCommand command, CancellationToken cancellationToken)
@@ -38,6 +41,13 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand,PostRe
 
         var post = _mapper.Map<PostEntity>(command.NewPost);
         post.UserId = command.UserId;
+
+        if(command.NewPost.PictureFile != null){
+
+            var user = await _userRepository.GetByIdAsync(command.UserId);
+            var res = await _fileUploader.UploadImage(command.NewPost.PictureFile,$"{user.UserName}/post/");
+             post.PicturePath = res.Url.ToString();
+        }
         var createdPost = await _postRepository.CreateAsync(await CreateTagsAndReturn(post));
 
         return _mapper.Map<PostResponseDto>(createdPost);
