@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs.Follow;
 using Application.DTOs.Like;
+using Application.DTOs.Notification;
 using Application.DTOs.Tag;
 using Application.DTOs.User;
 
@@ -32,15 +33,13 @@ namespace Application.Profiles
                     return false;
                 }
                 return srcMember != null;
-            })); 
-            
-            CreateMap<UserEntity, UserResponseDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
-                if (srcMember is int value && value == 0)
-                {
-                    return false;
-                }
-                return srcMember != null;
             }));
+
+            CreateMap<NotificationEntity, NotificationDto>()
+                .ReverseMap()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content))
+                .ForMember(dest => dest.ReadStatus, opt => opt.MapFrom(src => src.ReadStatus));
 
             CreateMap<UserEntity, UserRequestDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
                 if (srcMember is int value && value == 0)

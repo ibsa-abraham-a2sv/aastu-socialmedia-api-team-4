@@ -21,18 +21,18 @@ public class NotificationController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<NotificationDto>> CreateNotification(NotificationDto notificationDto)
-    {
-        var command = new CreateNotificationCommand
-        {
-            NotificationDto = notificationDto
-        };
-
-        var notification = await _mediator.Send(command);
-
-        return notification;
-    }
+    // [HttpPost]
+    // public async Task<ActionResult<NotificationDto>> CreateNotification(NotificationDto notificationDto)
+    // {
+    //     var command = new CreateNotificationCommand
+    //     {
+    //         NotificationDto = notificationDto
+    //     };
+    //
+    //     var notification = await _mediator.Send(command);
+    //
+    //     return notification;
+    // }
 
     [HttpPost("toggle")]
     public async Task<ActionResult<NotificationDto>> ToggleNotification(int notificationId)

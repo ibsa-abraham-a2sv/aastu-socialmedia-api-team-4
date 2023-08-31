@@ -16,15 +16,15 @@ public class FileUpload : ControllerBase
         _fileUploader = fileUploader;
     }
 
-    [HttpPost("image")]
-    public async Task<ImageUploadResult?> UploadImage(List<IFormFile> files)
-    {
-        ImageUploadResult uploadResult = null;
-        foreach (var file in files)
-        {
-            uploadResult = await _fileUploader.UploadImage(file, "images");
-            Console.WriteLine(file.FileName + " " + file.Name + " "  + uploadResult.Url);
-        }
-        return uploadResult;
-    }
+    // [HttpPost("image")]
+    // public async Task<ImageUploadResult?> UploadImage(List<IFormFile> files)
+    // {
+    //     ImageUploadResult uploadResult = null;
+    //     foreach (var file in files)
+    //     {
+    //         uploadResult = await _fileUploader.UploadImage(file, "images");
+    //         Console.WriteLine(file.FileName + " " + file.Name + " "  + uploadResult.Url);
+    //     }
+    //     return uploadResult;
+    // }
 }
