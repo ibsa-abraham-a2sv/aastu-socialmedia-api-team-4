@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialSyncIntegrationTesting.Tests", "SocialSyncIntegrationTesting.Tests\SocialSyncIntegrationTesting.Tests.csproj", "{0116BA10-AB71-403F-965E-8CBDC264EC98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.unitTests", "Application.unitTests\Application.unitTests.csproj", "{319ACF60-20E5-49B6-A7D4-63CA2520CCC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{0116BA10-AB71-403F-965E-8CBDC264EC98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0116BA10-AB71-403F-965E-8CBDC264EC98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0116BA10-AB71-403F-965E-8CBDC264EC98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{319ACF60-20E5-49B6-A7D4-63CA2520CCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{319ACF60-20E5-49B6-A7D4-63CA2520CCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{319ACF60-20E5-49B6-A7D4-63CA2520CCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{319ACF60-20E5-49B6-A7D4-63CA2520CCC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
