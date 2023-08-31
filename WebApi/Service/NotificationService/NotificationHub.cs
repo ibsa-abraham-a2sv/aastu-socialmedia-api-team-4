@@ -1,5 +1,7 @@
 ﻿using Application.Contracts;
+using Application.Features.Notification.Queries.GetNotifications;
 using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebApi.Service.NotificationService;
@@ -8,11 +10,13 @@ public class NotificationHub : Hub
 {
     private readonly IUserConnectionRepository _userConnectionRepository;
     private readonly INotificationRepository _notificationRepository;
+    private readonly IMediator _mediator;
 
-    public NotificationHub(IUserConnectionRepository userConnectionRepository, INotificationRepository notificationRepository)
+    public NotificationHub(IUserConnectionRepository userConnectionRepository, INotificationRepository notificationRepository, IMediator mediator)
     {
         _userConnectionRepository = userConnectionRepository;
         _notificationRepository = notificationRepository;
+        _mediator = mediator;
     }
     
     public override async Task OnConnectedAsync()
@@ -30,10 +34,15 @@ public class NotificationHub : Hub
             ConnectionId = Context.ConnectionId
         });
 
-        var loggedInUserNotificationsList = await _notificationRepository.GetNotificationsOfUser(loggedInUser);
+        var loggedInUserNotificationsList = await _mediator.Send(new GetNotificationsOfUserCommand
+        {
+            UserId = loggedInUser
+        });
 
         Console.WriteLine($"Connection Id: {Context.ConnectionId}");
-        await Clients.All.SendAsync("ReceiveNotification", new {notifications = loggedInUserNotificationsList});
+        var sendNotifications = new { unreadCount = loggedInUserNotificationsList.Count(n => !n.ReadStatus), notifications = loggedInUserNotificationsList };
+        await Clients.Caller.SendAsync("ReceiveNotification", sendNotifications);
+        // await Clients.All.SendAsync("ReceiveNotification", sendNotifications);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)

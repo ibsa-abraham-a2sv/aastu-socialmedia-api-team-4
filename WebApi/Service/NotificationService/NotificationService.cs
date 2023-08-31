@@ -1,5 +1,7 @@
 ﻿using Application.Contracts;
+using Application.Features.Notification.Queries.GetNotifications;
 using Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebApi.Service.NotificationService;
@@ -11,15 +13,17 @@ public class NotificationService : INotificationService
     private readonly IUserConnectionRepository _userConnectionRepository;
     private readonly IPostRepository _postRepository;
     private readonly INotificationRepository _notificationRepository;
+    private readonly IMediator _mediator;
 
     public NotificationService(IHubContext<NotificationHub> hubContext, IUserRepository userRepository,
-        IUserConnectionRepository userConnectionRepository, IPostRepository postRepository, INotificationRepository notificationRepository)
+        IUserConnectionRepository userConnectionRepository, IPostRepository postRepository, INotificationRepository notificationRepository, IMediator mediator)
     {
         _hubContext = hubContext;
         _userRepository = userRepository;
         _userConnectionRepository = userConnectionRepository;
         _postRepository = postRepository;
         _notificationRepository = notificationRepository;
+        _mediator = mediator;
     }
 
     public async Task SendNotificationToSingleUser(int notificationReceiverUserId, string message)
@@ -40,8 +44,13 @@ public class NotificationService : INotificationService
         // send notifications list if notification receiver is logged in
         if (receiverConnectionId != null)
         {
-            var notificationsList = await _notificationRepository.GetNotificationsOfUser(notificationReceiverUserId);
-            var messages = new { notifications = notificationsList };
+            var notificationsList = await _mediator.Send(new GetNotificationsOfUserCommand
+            {
+                UserId = notificationReceiverUserId
+            });
+            
+            // var notificationsList = await _notificationRepository.GetNotificationsOfUser(notificationReceiverUserId);
+            var messages = new { unreadCount = notificationsList.Count(n => !n.ReadStatus), notifications = notificationsList };
             await _hubContext.Clients.Client(receiverConnectionId.ConnectionId).SendAsync("ReceiveNotification", messages);
         }
     }
