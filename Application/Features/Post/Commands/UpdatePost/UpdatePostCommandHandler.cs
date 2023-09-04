@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Contracts;
+using Application.Contracts.Services;
 using Application.Exceptions;
 using AutoMapper;
 using Domain.Entities;
@@ -16,16 +17,18 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand,Unit>
     private readonly IMapper _mapper;
     private readonly IPostRepository _postRepository;
     private readonly IUserRepository _userRepository;
-    public UpdatePostCommandHandler(IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
+     private readonly IFileUploader _fileUploader;
+    public UpdatePostCommandHandler(IFileUploader fileUploader,IPostRepository postRepository, IUserRepository userRepository, IMapper mapper)
     {
         _mapper = mapper;
         _postRepository = postRepository;
         _userRepository = userRepository;
+        _fileUploader = fileUploader;
     }
 
     public async Task<Unit> Handle(UpdatePostCommand command, CancellationToken cancellationToken)
     {
-        var validator = new UpdatePostCommandValidator(){UserRepository = _userRepository};
+        var validator = new UpdatePostCommandValidator(_userRepository);
         var validationResult = await validator.ValidateAsync(command);
 
         if (!validationResult.IsValid)
@@ -40,7 +43,14 @@ public class UpdatePostCommandHandler : IRequestHandler<UpdatePostCommand,Unit>
         }
 
         var post = _mapper.Map<PostEntity>(command.UpdatePost);
-        post.Id = command.PostId;
+        post.UserId = command.UserId;
+
+        if(command.UpdatePost.PictureFile != null){
+            var user = await _userRepository.GetByIdAsync(command.UserId);
+            var res = await _fileUploader.UploadImage(command.UpdatePost.PictureFile,$"{user.UserName}/post/");
+             post.PicturePath = res.Url.ToString();
+        }
+        
         await _postRepository.UpdateAsync(command.PostId,post);
         return Unit.Value;
     }

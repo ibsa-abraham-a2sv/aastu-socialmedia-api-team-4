@@ -6,7 +6,7 @@ namespace Application.Features.Post.Commands.UpdatePost;
 public class UpdatePostCommand : IRequest<Unit>
 {
     public int PostId {get; set;}
-    public PostRequestDto? UpdatePost {get; set;}
+    public PostRequestDto UpdatePost {get; set;} = null!;
     public int UserId {get; set;}
 }
 

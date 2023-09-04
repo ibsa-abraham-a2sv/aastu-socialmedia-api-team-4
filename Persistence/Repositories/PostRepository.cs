@@ -26,7 +26,7 @@ namespace Persistence.Repositories
         public async Task<IReadOnlyList<PostEntity>> SearchPostAsync(string query)
         {
             return await _dbContext.Posts
-                    .Where(p => p.Content.Contains(query) && p.Title.Contains(query))
+                    .Where(p => p.Content.Contains(query) || p.Title.Contains(query))
                     .ToListAsync();
         }
         

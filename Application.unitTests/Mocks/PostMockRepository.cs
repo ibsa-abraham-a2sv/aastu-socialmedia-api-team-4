@@ -13,6 +13,7 @@ public static class PostMockRepository
             {
                 Id = 1,
                 UserId = 1,
+                Title = "Title 1",
                 Content = "Content 1",
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow
@@ -21,6 +22,7 @@ public static class PostMockRepository
             {
                 Id = 2,
                 UserId = 2,
+                Title = "Title 2",
                 Content = "Content 2",
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow
@@ -29,6 +31,7 @@ public static class PostMockRepository
             {
                 Id = 3,
                 UserId = 3,
+                Title = "Title 3",
                 Content = "Content 3",
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow
