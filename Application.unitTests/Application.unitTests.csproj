@@ -30,7 +30,6 @@
 
 
     <ItemGroup>
-      <Folder Include="UnitTests\Follow\Command\" />
       <Folder Include="UnitTests\Follow\Queries\" />
       <Folder Include="UnitTests\Like\Queries\" />
       <Folder Include="UnitTests\Notification\Command\" />

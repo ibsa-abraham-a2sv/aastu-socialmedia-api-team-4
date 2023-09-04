@@ -33,6 +33,10 @@ public static class LikeMockRepository
         var mockLikeRepository = new Mock<ILikeRepository>();
 
         mockLikeRepository.Setup(m => m.GetAllAsync()).ReturnsAsync(likes);
+        mockLikeRepository.Setup(r => r.CreateLike(It.IsAny<LikeEntity>())).ReturnsAsync((LikeEntity like) => {
+            likes.Add(like);
+            return like;
+        });
 
         return mockLikeRepository;
     }
