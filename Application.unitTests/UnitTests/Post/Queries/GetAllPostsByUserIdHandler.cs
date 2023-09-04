@@ -21,7 +21,7 @@ namespace Application.UnitTests.Post.Queries
 
             var mapperConfig = new MapperConfiguration(c => 
             {
-                c.AddProfile<ProfileMapping>();
+                c.AddProfile<MappingProfile>();
             });
 
             _mockMapper = mapperConfig.CreateMapper();

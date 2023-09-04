@@ -20,7 +20,7 @@ namespace Application.UnitTests.Post.Queries
 
             var mapperConfig = new MapperConfiguration(c => 
             {
-                c.AddProfile<ProfileMapping>();
+                c.AddProfile<MappingProfile>();
             });
 
             _mapper = mapperConfig.CreateMapper();
