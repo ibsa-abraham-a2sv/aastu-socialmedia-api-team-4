@@ -28,7 +28,7 @@ public class CreateFollowHandlerTest
 
         var mapperConfig = new MapperConfiguration(m =>
         {
-            m.AddProfile<ProfileMapping>();
+            m.AddProfile<MappingProfile>();
         });
 
         _mapper = mapperConfig.CreateMapper();
