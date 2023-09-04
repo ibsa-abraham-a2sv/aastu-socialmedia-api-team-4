@@ -7,11 +7,8 @@ namespace Application.Features.Post.Commands.CreatePost;
 
 public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
 {
-    public IUserRepository UserRepository {get; set;}
     public CreatePostCommandValidator(IUserRepository userRepository)
     {
-        UserRepository = userRepository;
-
         RuleFor(x => x.NewPost)
         .NotNull()
         .When(x => x.NewPost != null); // Apply rules only if NewPost is not null
