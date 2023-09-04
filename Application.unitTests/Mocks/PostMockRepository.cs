@@ -38,6 +38,10 @@ public static class PostMockRepository
         var mockPostRepository = new Mock<IPostRepository>();
 
         mockPostRepository.Setup(m => m.GetAllAsync()).ReturnsAsync(posts);
+        mockPostRepository.Setup(p => p.Exists(It.IsAny<int>())).ReturnsAsync((int postId) =>
+        {
+            return posts.Exists(p => p.Id == postId);
+        });
 
         return mockPostRepository;
     }
