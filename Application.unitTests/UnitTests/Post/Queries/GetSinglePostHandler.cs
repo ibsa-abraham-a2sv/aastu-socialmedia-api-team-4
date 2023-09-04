@@ -33,8 +33,8 @@ namespace Application.UnitTests.Post.Queries
 
             var result = await handler.Handle(new GetSinglePostRequest { PostId = postId }, CancellationToken.None);
 
-            result.ShouldBeOfType<PostResponseDto>();
-            result.Id.ShouldBe(postId); 
+            Assert.IsType<PostResponseDto>(result);
+            Assert.Equal(postId, result.Id);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using MediatR;
 using Moq;
 
 namespace Application.unitTests.Mocks;
@@ -46,6 +47,22 @@ public static class PostMockRepository
             return posts.Exists(p => p.Id == postId);
         });
 
+        
+        mockPostRepository.Setup(c => c.GetByIdAsync(It.IsAny<int>()))!.ReturnsAsync((int id) => posts.FirstOrDefault(c => c.Id == id));
+        
+        mockPostRepository.Setup(c => c.CreateAsync(It.IsAny<PostEntity>()))!.ReturnsAsync((PostEntity post) =>
+        {
+            post.Id = posts.Count + 1;
+            posts.Add(post);
+            return post;
+        });
+        
+        mockPostRepository.Setup(c => c.UpdateAsync(It.IsAny<int>(), It.IsAny<PostEntity>()))!.ReturnsAsync((int id, PostEntity post) => Unit.Value);
+        
+        mockPostRepository.Setup(c => c.DeleteAsync(It.IsAny<int>()))!.ReturnsAsync((int id) => Unit.Value);
+
+        mockPostRepository.Setup(c => c.GetAllPostsByUserIdAsync(It.IsAny<int>())).ReturnsAsync((int id) => posts.Where(p => p.UserId ==id).ToList());
+        mockPostRepository.Setup(c => c.SearchPostAsync(It.IsAny<string>())).ReturnsAsync(() => posts.ToList());
         return mockPostRepository;
     }
 }

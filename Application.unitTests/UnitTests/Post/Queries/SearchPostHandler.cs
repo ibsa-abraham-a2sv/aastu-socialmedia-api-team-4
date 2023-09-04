@@ -34,9 +34,8 @@ namespace Application.UnitTests.Post.Queries
 
             var result = await handler.Handle(new SearchPostRequest { Query = query }, CancellationToken.None);
 
-            result.ShouldBeOfType<List<PostResponseDto>>();
-
-            // result.Count.ShouldBe(3);
+            Assert.IsType<List<PostResponseDto>>(result);
+            Assert.Equal(3, result.Count);
         }
     }
 }

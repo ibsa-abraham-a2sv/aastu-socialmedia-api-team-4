@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Shouldly;
 using Infrastructure.FileUpload;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.UnitTests.Post.Commands
 {
@@ -26,11 +27,21 @@ namespace Application.UnitTests.Post.Commands
             _mockUserRepository = UserMockRepository.GetUserRepository();
             _mockTagRepository = TagMockRepository.GetTagRepository();
 
+            var con = new Dictionary<string, string>
+            {
+                { "Cloudinary:cloudinaryUrl", "cloudinary://593376442735824:X2DSGSO2bV9PDjqpOTb7HVYLGgQ@dkphkzco3" }
+            };
+
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(con)
+                .Build();
+
             var serviceProvider = new ServiceCollection()
+                .Configure<CloudinaryUrl>(configuration.GetSection("Cloudinary"))
                 .AddScoped<IFileUploader, FileUploader>()
                 .BuildServiceProvider();
 
-            _fileUploader = serviceProvider.GetRequiredService<FileUploader>();
+            _fileUploader = serviceProvider.GetRequiredService<IFileUploader>();
 
 
             var mapperConfig = new MapperConfiguration(c => 
