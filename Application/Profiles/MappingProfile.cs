@@ -15,9 +15,9 @@ using Application.DTOs.User;
 
 namespace Application.Profiles
 {
-    public class ProfileMapping : Profile
+    public class MappingProfile : Profile
     {
-        public ProfileMapping() 
+        public MappingProfile() 
         {
             CreateMap<CommentRequestDto, CommentEntity>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => {
                 if (srcMember is int value && value == 0)
