@@ -52,7 +52,7 @@ namespace Application.UnitTests.Post.Commands
         [Fact]
         public async Task UpdatePost()
         {
-            var updatePost = new PostRequestDto{Content = "content 22",Title = "Title 22"};
+            var updatePost = new PostRequestDto{Content = "content 2",Title = "Title 2"};
             var command = new UpdatePostCommand{PostId = 2,UserId=2,UpdatePost=updatePost};
             var handler = new UpdatePostCommandHandler(_fileUploader,_mockPostRepository.Object, _mockUserRepository.Object, _mockMapper);
 
