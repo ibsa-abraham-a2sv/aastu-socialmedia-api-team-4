@@ -43,7 +43,7 @@ namespace Application.UnitTests.Post.Commands
             _fileUploader = serviceProvider.GetRequiredService<IFileUploader>();
             var mapperConfig = new MapperConfiguration(c => 
             {
-                c.AddProfile<ProfileMapping>();
+                c.AddProfile<MappingProfile>();
             });
 
             _mockMapper = mapperConfig.CreateMapper();

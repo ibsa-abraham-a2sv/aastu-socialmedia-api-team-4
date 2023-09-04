@@ -46,7 +46,7 @@ namespace Application.UnitTests.Post.Commands
 
             var mapperConfig = new MapperConfiguration(c => 
             {
-                c.AddProfile<ProfileMapping>();
+                c.AddProfile<MappingProfile>();
             });
 
             _mockMapper = mapperConfig.CreateMapper();
